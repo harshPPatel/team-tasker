@@ -128,6 +128,14 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+### Composer ###
+server/composer.phar
+server/vendor/
+
 # End of https://www.gitignore.io/api/node,vuejs,windows
 
+# Others
 _todo.md
+
+# .env file
+.env
