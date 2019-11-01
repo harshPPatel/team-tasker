@@ -20,7 +20,10 @@ $user = new User($db);
 $result = $user->getSingleWithPassword($data->username);
 
 if ($result == null) {
-  $user->create($data->username, $data->password);
+
+  $encryptPassword = password_hash($data->password, PASSWORD_BCRYPT);
+
+  $user->create($data->username, $encryptPassword);
   $message = [
     'username' => $data->username,
     'created_at' => time(),
