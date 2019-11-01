@@ -11,25 +11,21 @@ function validateUser($data) {
 
   $username = $data->username;
   $password = $data->password;
-  $confirmPassword = $data->confirmPassword ? $data->confirmPassword : null;
+  $confirmPassword = property_exists($data, 'confirmPassword') ? $data->confirmPassword : null;
 
-  if (!preg_match('/^[a-zA-Z0-9]{2,20}$/', $username)) {
+  $isValidUser = preg_match('/^[a-zA-Z0-9]{2,20}$/', $username);
+  $isValidPassword = preg_match('/^[a-zA-Z0-9@_&]{6,30}$/', $password);
+  $isValidConfirmPassword = ($confirmPassword && $confirmPassword === $password);
+
+  if (!$isValidUser || !$isValidPassword || !$isValidConfirmPassword) {
     errorHandler(
       422,
       'Invalid Username or Password',
-      new Exception('Invalid Username or Password')
+      new Exception('Values does not satisfy provided data to the guidelines')
     );
   }
 
-  if (!preg_match('/^[a-zA-Z0-9@_&]{6,30}$/', $password)) {
-    errorHandler(
-      422,
-      'Invalid Username or Password',
-      new Exception('Invalid Username or Password')
-    );
-  }
-
-
+  return true;
 }
 
 ?>

@@ -26,7 +26,6 @@ class User {
     }
   }
 
-  
   function getSingleWithPassword($username) {
     $query = "SELECT username, password, role, createdAt, modifiedAt
               FROM {$this->table_name}

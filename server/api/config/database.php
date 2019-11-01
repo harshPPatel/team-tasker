@@ -1,4 +1,5 @@
 <?php
+
 class Database {
 
   private $host;
@@ -31,4 +32,5 @@ class Database {
     return $this->connection;
   }
 }
+
 ?>

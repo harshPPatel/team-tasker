@@ -2,6 +2,7 @@
 
 require_once('../../index.php');
 require_once('../models/User.php');
+require_once('../validators/user.php');
 
 $db = $database->getConnection();
 
@@ -12,9 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (!$data || !$data->{'username'} || !$data->{'password'}) {
-  errorHandler(405, 'Insuffecient data is supplied', new Exception('Insuffecient data is supplied'));
-}
+validateUser($data);
 
 $user = new User($db);
 
