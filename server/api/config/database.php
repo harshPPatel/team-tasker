@@ -25,15 +25,7 @@ class Database {
         $this->password
       );
     } catch (PDOException $e) {
-      http_response_code(500);
-      $message = [
-        "message" => "Error while connecting to the database",
-        "stack" => ($_ENV['APP_ENV'] === 'development') ? $e->getTrace() : [],
-      ];
-      
-      echo json_encode($message);
-
-      die();
+      errorHandler(null, "Error while connecting to the database", $e);
     }
 
     return $this->connection;
