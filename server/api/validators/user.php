@@ -15,7 +15,7 @@ function validateUser($data) {
 
   $isValidUser = preg_match('/^[a-zA-Z0-9]{2,20}$/', $username);
   $isValidPassword = preg_match('/^[a-zA-Z0-9@_&]{6,30}$/', $password);
-  $isValidConfirmPassword = ($confirmPassword && $confirmPassword === $password);
+  $isValidConfirmPassword = $confirmPassword ? ($confirmPassword === $password) : true;
 
   if (!$isValidUser || !$isValidPassword || !$isValidConfirmPassword) {
     errorHandler(

@@ -26,19 +26,35 @@ $user = new User($db);
 // Checking if user already exists in the database
 $result = $user->getSingleWithPassword($data->username);
 
-// If user does not exists than creating new user in database
-if ($result == null) {
+// If user does exists than validating user
+if ($result != null) {
 
-  // Encrypting the password
-  $encryptPassword = password_hash($data->password, PASSWORD_BCRYPT);
+  // Decrypting the password
+  $isValidHash = password_verify($data->password, $result['password']);
 
-  // Creating new user in database
-  $user->create($data->username, $encryptPassword);
+  // Throwing error if password is invalid
+  if (!$isValidHash) {
+    errorHandler(
+      409,
+      'Invalid Username or Password',
+      new Exception('Password is invalid for the provided user')
+    );
+  }
+
+  // importing Token file
+  require_once('../helpers/Token.php');
+
+  // Creating instance of JsonWebToken class
+  $jwt = new JsonWebToken();
+
+  // Generating the token
+  $token = $jwt->generateToken($result['username']);
 
   // Preparing return message
   $message = [
-    'username' => $data->username,
-    'created_at' => time(),
+    'username' => $result['username'],
+    'logged_in_at' => time(),
+    'token' => "Bearer {$token}",
   ];
 
   // Returning message in json format
@@ -48,8 +64,8 @@ if ($result == null) {
   // Throwing error if user already exists
   errorHandler(
     409,
-    'Username already exists',
-    new Exception('Username Already exists in the database')
+    'Invalid Username or Password',
+    new Exception('Username does not exists in the database')
   );
 }
 
