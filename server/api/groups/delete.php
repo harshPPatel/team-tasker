@@ -44,8 +44,6 @@ if ($groupResult == null) {
 }
 
 try {
-
-  // die(urldecode($groupResult['image']));
   // Creating group in database
   $result = $group->delete($groupResult['groupId']);
   $image->remove(urldecode($groupResult['image']));
