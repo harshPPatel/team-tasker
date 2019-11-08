@@ -28,7 +28,7 @@ class User {
    */
   function getSingle($username) {
     // Creating query to get user from database
-    $query = "SELECT username, role, createdAt, modifiedAt
+    $query = "SELECT userId, username, role, createdAt, modifiedAt
               FROM {$this->table_name}
               WHERE username = :username
               LIMIT 1;";
@@ -38,7 +38,7 @@ class User {
 
     // Binding values
     $bind_values = [
-      'username' => $username,
+      ':username' => $username,
     ];
 
     try {
@@ -61,7 +61,7 @@ class User {
    */
   function getSingleWithPassword($username) {
     // Creating the query
-    $query = "SELECT username, password, role, createdAt, modifiedAt
+    $query = "SELECT userId, username, password, role, createdAt, modifiedAt
               FROM {$this->table_name}
               WHERE username = :username;";
     // Preparing the query
@@ -69,7 +69,7 @@ class User {
 
     // Preapring the binding values
     $bind_values = [
-      'username' => $username,
+      ':username' => $username,
     ];
 
     try {
@@ -137,16 +137,20 @@ class User {
    * @return void
    */
   function create($username, $password) {
+    // Time
+    $time = time();
+
     // Creating the query
-    $query = "INSERT INTO {$this->table_name} (username, password)
-              VALUES (:username, :password)";
+    $query = "INSERT INTO {$this->table_name} (username, password, createdAt)
+              VALUES (:username, :password, :time);";
     // Preparing the query
     $statement = $this->db->prepare($query);
 
     // Binding the values
     $bind_values = [
-      'username' => $username,
-      'password' => $password,
+      ':username' => $username,
+      ':password' => $password,
+      ':time' => $time,
     ];
 
     try {
@@ -176,9 +180,9 @@ class User {
 
     // Preparing the binding values
     $bind_values = [
-      'username' => $username,
-      'password' => $password,
-      'role' => $role,
+      ':username' => $username,
+      ':password' => $password,
+      ':role' => $role,
     ];
 
     try {
@@ -204,7 +208,7 @@ class User {
     $statement = $this->db->prepare($query);
 
     // Preparing the binding values
-    $bind_values = [ 'username' => $username, ];
+    $bind_values = [ ':username' => $username, ];
 
     try {
       // Binding the values and executing the query
