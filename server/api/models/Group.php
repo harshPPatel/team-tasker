@@ -91,10 +91,10 @@ class Group {
     }
   }
 
-  public function update($groupId, $name, $image, $userId) {
+  public function update($groupId, $name, $image) {
     // Creating the query
     $query = "UPDATE {$this->table_name}
-              SET name=:name, image=:image, userId=:userId
+              SET name=:name, image=:image
               WHERE groupId=:groupId;";
     // Preparing the query
     $statement = $this->db->prepare($query);
@@ -104,7 +104,6 @@ class Group {
       ':name' => $name,
       ':image' => $image,
       ':groupId' => $groupId,
-      ':userId' => $userId,
     ];
 
     try {

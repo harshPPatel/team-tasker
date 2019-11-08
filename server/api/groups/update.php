@@ -53,7 +53,7 @@ try {
   }
 
   // Creating group in database
-  $result = $group->update($groupResult['groupId'], $_POST['name'], $imageEncoded, $authenticatedUser['userId']);
+  $result = $group->update($groupResult['groupId'], $_POST['name'], $imageEncoded);
 
   // Preparing return message
   $message = [
