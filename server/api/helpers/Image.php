@@ -74,6 +74,10 @@ class Image {
         new Exception('MIME Type of image is invalid.'));
     }
   }
+
+  public function remove($imagePath) {
+    unlink($imagePath);
+  }
 }
 
 ?>

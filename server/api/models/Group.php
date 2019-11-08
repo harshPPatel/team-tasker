@@ -9,6 +9,30 @@ class Group {
     $this->db = $database;
   }
 
+  function getSingle($groupId) {
+    // Creating query to get all groups of user from database
+    $query = "SELECT groupId, name, image, userId
+              FROM {$this->table_name}
+              WHERE groupId = :groupId;";
+
+    // Preparing the query
+    $statement = $this->db->prepare($query);
+
+    // Binding values
+    $bind_values = [ ':groupId' => $groupId, ];
+
+    try {
+      // executing the query and binding the values
+      $statement->execute($bind_values);
+      // fetching the row and returning the value
+      return $statement->fetch(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+      // Hnadling the error
+      errorHandler(null, null, $e);
+    }
+  }
+
   function getAll($userId) {
     // Creating query to get all groups of user from database
     $query = "SELECT groupId, name, image, userId
@@ -55,22 +79,22 @@ class Group {
 
     try {
       // Executing the query
-      die($statement->execute($bind_values));
+      $statement->execute($bind_values);
       // die(print_r($statement));
-      // return [
-      //   'name' => $name,
-      //   'image' => $image,
-      // ];
+      return [
+        'name' => $name,
+        'image' => $image,
+      ];
     } catch (PDOException $e) {
       // Handling the error
       errorHandler(null, null, $e);
     }
   }
 
-  public function update($groupId, $name, $image) {
+  public function update($groupId, $name, $image, $userId) {
     // Creating the query
     $query = "UPDATE {$this->table_name}
-              SET name=:name, image=:image
+              SET name=:name, image=:image, userId=:userId
               WHERE groupId=:groupId;";
     // Preparing the query
     $statement = $this->db->prepare($query);
@@ -80,11 +104,17 @@ class Group {
       ':name' => $name,
       ':image' => $image,
       ':groupId' => $groupId,
+      ':userId' => $userId,
     ];
 
     try {
       // Binding values and executing the query
       $statement->execute($bind_values);
+      return [
+        'groupId' => $groupId,
+        'name' => $name,
+        'image' => $image,
+      ];
     } catch (PDOException $e) {
       // Handling the error
       errorHandler(null, null, $e);

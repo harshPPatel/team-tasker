@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 $decoded = verifyToken();
 
 // Verifying the data
-validateGroup('image');
+validateUpdateGroup('image', 'id');
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -35,22 +35,35 @@ $authenticatedUser = $user->getSingle($decoded->username);
 
 $image = new Image('image', $authenticatedUser['username']);
 
-try {
-  $groupImage = $image->upload();
+$groupResult = $group->getSingle($_POST['id']);
 
-  $imageEncoded = filter_var($groupImage, FILTER_SANITIZE_ENCODED);
+if ($groupResult == null) {
+  errorHandler(404,
+    'Group Does Not Exists',
+    new Exception('Group ID does not exists in the database'));
+}
+
+try {
+  if (isset($_FILES['image'])) {
+    $groupImage = $image->upload();
+    $imageEncoded = filter_var($groupImage, FILTER_SANITIZE_ENCODED);
+    $image->remove(urldecode($groupResult['image']));
+  } else {
+    $imageEncoded = $groupResult['image'];
+  }
 
   // Creating group in database
-  $result = $group->create($_POST['name'], $imageEncoded, $authenticatedUser['userId']);
+  $result = $group->update($groupResult['groupId'], $_POST['name'], $imageEncoded, $authenticatedUser['userId']);
 
   // Preparing return message
   $message = [
     'username' => $authenticatedUser['username'],
     'group' => [
       'name' => $result['name'],
-      'image' => urldecode($result['image']),
+      'image' => $result['image'],
     ],
-    'created_at' => time(),
+    'message' => 'Group updated successfully',
+    'modifiedAt' => time(),
   ];
 
   // Returning message in json format
