@@ -87,4 +87,28 @@ function validateUpdateGroup($imageFieldName, $idFieldName) {
   return true;
 }
 
+function validateDeleteGroup($idFieldName) {
+  // Throwing the error if enough data is not provided
+  if (!isset($_POST["{$idFieldName}"])) {
+    errorHandler(
+      405,
+      'Insuffecient data is supplied',
+      new Exception('Insuffecient data is supplied')
+    );
+  }
+
+  if (intval($_POST["{$idFieldName}"]) === 0) {
+    errorHandler(
+      405,
+      'Invalid Data',
+      new Exception('GroupID is not valid integer')
+    );
+  }
+
+  // Sanitize data here and return it in array!
+
+  // Returning true if data is valid
+  return true;
+}
+
 ?>

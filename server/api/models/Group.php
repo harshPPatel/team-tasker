@@ -134,6 +134,11 @@ class Group {
     try {
       // Binding the values and executing the query
       $statement->execute($bind_values);
+
+      return [
+        'groupId' => $groupId
+      ];
+
     } catch (PDOException $e) {
       // Handling the error
       errorHandler(null, null, $e);
