@@ -33,7 +33,7 @@ function validateUser($data) {
     errorHandler(
       422,
       'Invalid Username or Password',
-      new Exception('Values does not satisfy provided data to the guidelines')
+      new Exception('Values does not satisfy provided data guidelines')
     );
   }
 

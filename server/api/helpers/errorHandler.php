@@ -3,13 +3,14 @@
 /**
  * Handles error and returns error in json format and die the application
  *
- * @param int $error_code
+ * @param string $error_code
  * @param string $error_message
  * @param Exception $e
  */
 function errorHandler($error_code, $error_message, $e) {
+
   // Setting the response code
-  http_response_code($error_code || 500);
+  http_response_code($error_code !== null ? $error_code : 500);
 
   // Creating returning message
   $message = [

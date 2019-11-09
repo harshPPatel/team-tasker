@@ -89,7 +89,7 @@ class Task {
     // die(gettype($image));
     $time = time();
     // Creating the query
-    $query = "INSERT INTO `{$this->table_name}`
+    $query = "INSERT INTO {$this->table_name}
               (`task`, `status`, `urgency`, `description`, `dueDate`, `userId`, `groupId`, `createdAt`)
               VALUES (:task, :status, :urgency, :description, :dueDate, :userId, :groupId, :createdAt);";
     // Preparing the query
@@ -97,21 +97,36 @@ class Task {
 
     // Binding the values
     $bind_values = [
-      ':task' => $task['task'],
-      ':status' => (int)$task['status'],
-      ':urgency' => (int)$task['urgency'],
-      ':description' => $task['description'],
-      ':dueDate' => (int)$task['dueDate'],
-      ':userId' => (int)$userId,
-      ':groupId' => (int)$task['groupId'],
+      ':task' => $task->task,
+      ':status' => (int)$task->status,
+      ':urgency' => (int)$task->urgency,
+      ':description' => $task->description,
+      ':dueDate' => (int)$task->dueDate,
+      ':userId' => $userId,
+      ':groupId' => property_exists($task, 'groupId')
+        ? $task->groupId
+        : null,
       ':createdAt' => (int)$time,
     ];
+
+    // die(print_r($bind_values));
 
     try {
       // Executing the query
       $statement->execute($bind_values);
       // die(print_r($statement));
-      return $task;
+      return [
+        'task' => $task->task,
+        'status' => (int)$task->status,
+        'urgency' => (int)$task->urgency,
+        'description' => $task->description,
+        'dueDate' => $task->dueDate,
+        'userId' => (int)$userId,
+        'groupId' => property_exists($task, 'groupId')
+          ? (int)$task->groupId
+          : null,
+        'createdAt' => (int)$time,
+      ];
     } catch (PDOException $e) {
       // Handling the error
       errorHandler(null, null, $e);
