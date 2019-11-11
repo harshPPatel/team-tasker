@@ -73,7 +73,7 @@ if ($taskDatabase['userId'] !== $authenticatedUser['userId']) {
 
 try {
   // Creating group in database
-  $result = $task->update($data, $data->taskId, $authenticatedUser['userId']);
+  $result = $task->update($data, $taskDatabase['taskId'], $authenticatedUser['userId']);
 
   // Preparing return message
   $message = [

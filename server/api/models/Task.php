@@ -175,15 +175,19 @@ class Task {
     }
   }
 
-  public function delete($taskId) {
+  public function delete($taskId, $userId) {
     // Creating the query
     $query = "DELETE FROM {$this->table_name}
-              WHERE taskId=:taskId;";
+              WHERE taskId=:taskId
+                AND userId=:userId;";
     // Preparing the query
     $statement = $this->db->prepare($query);
 
     // Preparing the binding values
-    $bind_values = [ ':taskId' => $taskId, ];
+    $bind_values = [
+      ':taskId' => $taskId,
+      ':userId' => $userId,
+    ];
 
     try {
       // Binding the values and executing the query
