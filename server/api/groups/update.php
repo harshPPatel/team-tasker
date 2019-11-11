@@ -37,10 +37,16 @@ $image = new Image('image', $authenticatedUser['username']);
 
 $groupResult = $group->getSingle($_POST['id']);
 
-if ($groupResult == null) {
+if (!$groupResult || $groupResult == null) {
   errorHandler(404,
     'Group Does Not Exists',
     new Exception('Group ID does not exists in the database'));
+}
+
+if ($groupResult['userId'] !== $authenticatedUser['userId']) {
+  errorHandler(401,
+    'Unauthorized Request',
+    new Exception('Group does not belongs to the logged in user'));
 }
 
 try {

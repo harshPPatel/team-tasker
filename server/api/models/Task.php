@@ -119,7 +119,7 @@ class Task {
         'task' => $task->task,
         'status' => (int)$task->status,
         'urgency' => (int)$task->urgency,
-        'description' => $task->description,
+        'description' => htmlspecialchars($task['description']),
         'dueDate' => $task->dueDate,
         'userId' => (int)$userId,
         'groupId' => property_exists($task, 'groupId')
@@ -133,38 +133,41 @@ class Task {
     }
   }
 
-  public function update($taskId, $task) {
+  public function update($task, $taskId, $userId) {
     $time = time();
     // Creating the query
     $query = "UPDATE {$this->table_name}
-              SET task=:task, status=:status, urgency=:urgency, description=:description, dueDate=:dueDate
-              WHERE taskId=:taskId;";
+              SET task=:task, status=:status, urgency=:urgency, description=:description, dueDate=:dueDate, groupId=:groupId, modifiedAt=:modifiedAt
+              WHERE taskId = :taskId
+                AND userId = :userId;";
 
     // Preparing the query
     $statement = $this->db->prepare($query);
 
     // Preparing the binding values
     $bind_values = [
-      ':task' => $task['task'],
-      ':status' => (int)$task['status'],
-      ':urgency' => (int)$task['urgency'],
-      ':description' => $task['description'],
-      ':dueDate' => (int)$task['dueDate'],
+      ':task' => $task->task,
+      ':status' => (int)$task->status,
+      ':urgency' => (int)$task->urgency,
+      ':description' => htmlspecialchars($task->description),
+      ':dueDate' => (int)$task->dueDate,
       ':modifiedAt' => (int)$time,
-      ':taskId' => (int)$task['taskId'],
+      ':groupId' => (int)$task->groupId,
+      ':taskId' => (int)$taskId,
+      ':userId' => (int)$userId,
     ];
 
     try {
       // Binding values and executing the query
       $statement->execute($bind_values);
       return [
-        ':task' => $task['task'],
-        ':status' => (int)$task['status'],
-        ':urgency' => (int)$task['urgency'],
-        ':description' => $task['description'],
-        ':dueDate' => (int)$task['dueDate'],
+        ':task' => $task->task,
+        ':status' => (int)$task->status,
+        ':urgency' => (int)$task->urgency,
+        ':description' => $task->description,
+        ':dueDate' => (int)$task->dueDate,
         ':modifiedAt' => (int)$time,
-        ':groupId' => (int)$task['groupId'],
+        ':groupId' => (int)$task->groupId,
       ];
     } catch (PDOException $e) {
       // Handling the error
