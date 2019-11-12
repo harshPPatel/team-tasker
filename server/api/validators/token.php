@@ -31,7 +31,7 @@ function verifyToken() {
     return $result;
   } catch (Exception $e) {
     // Handling the error
-    errorHandler(null, null, $e);
+    errorHandler(400, 'Bad Request', $e);
   }
 
 }
