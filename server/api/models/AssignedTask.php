@@ -9,17 +9,17 @@ class AssignedTask {
     $this->db = $database;
   }
 
-  function getSingle($taskId) {
+  function getSingle($assignedTaskId) {
     // Creating query to get all groups of user from database
     $query = "SELECT assignedTaskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
               FROM {$this->table_name}
-              WHERE taskId = :taskId;";
+              WHERE assignedTaskId = :assignedTaskId;";
 
     // Preparing the query
     $statement = $this->db->prepare($query);
 
     // Binding values
-    $bind_values = [ ':taskId' => $taskId, ];
+    $bind_values = [ ':assignedTaskId' => $assignedTaskId, ];
 
     try {
       // executing the query and binding the values
@@ -107,7 +107,7 @@ class AssignedTask {
         'task' => $task->task,
         'status' => (int)$task->status,
         'urgency' => (int)$task->urgency,
-        'description' => htmlspecialchars($task['description']),
+        'description' => htmlspecialchars($task->description),
         'dueDate' => $task->dueDate,
         'userId' => (int)$task->userId,
         'createdAt' => (int)$time,
@@ -158,24 +158,20 @@ class AssignedTask {
     }
   }
 
-  public function updateUserTask($task, $assignedTaskId, $userId) {
+  public function updateUserTask($taskStatus, $assignedTaskId, $userId) {
     $time = time();
     // Creating the query
     $query = "UPDATE {$this->table_name}
-              SET task=:task, status=:status, urgency=:urgency, description=:description, dueDate=:dueDate, modifiedAt=:modifiedAt
+              SET status=:status, modifiedAt=:modifiedAt
               WHERE assignedTaskId = :assignedTaskId
-                AND userId=:userId;";
+                AND userId = :userId;";
 
     // Preparing the query
     $statement = $this->db->prepare($query);
 
     // Preparing the binding values
     $bind_values = [
-      ':task' => $task->task,
-      ':status' => (int)$task->status,
-      ':urgency' => (int)$task->urgency,
-      ':description' => htmlspecialchars($task->description),
-      ':dueDate' => (int)$task->dueDate,
+      ':status' => (int)$taskStatus,
       ':modifiedAt' => (int)$time,
       ':assignedTaskId' => (int)$assignedTaskId,
       ':userId' => (int)$userId,
@@ -185,13 +181,10 @@ class AssignedTask {
       // Binding values and executing the query
       $statement->execute($bind_values);
       return [
-        'task' => $task->task,
-        'status' => (int)$task->status,
-        'urgency' => (int)$task->urgency,
-        'description' => $task->description,
-        'dueDate' => (int)$task->dueDate,
+        'assignedTaskId' => (int)$assignedTaskId,
+        'status' => (int)$taskStatus,
+        'userId' => (int)$userId,
         'modifiedAt' => (int)$time,
-        'groupId' => (int)$task->groupId,
       ];
     } catch (PDOException $e) {
       // Handling the error

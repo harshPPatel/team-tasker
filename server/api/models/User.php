@@ -54,6 +54,39 @@ class User {
   }
 
   /**
+   * returns single user from database and returns user without password.
+   *
+   * @param int $userId
+   * @return array Array of the value of user row from database
+   */
+  function getSingleFromId($userId) {
+    // Creating query to get user from database
+    $query = "SELECT userId, username, role, createdAt, modifiedAt
+              FROM {$this->table_name}
+              WHERE userId = :userId
+              LIMIT 1;";
+
+    // Preparing the query
+    $statement = $this->db->prepare($query);
+
+    // Binding values
+    $bind_values = [
+      ':userId' => $userId,
+    ];
+
+    try {
+      // executing the query and binding the values
+      $statement->execute($bind_values);
+      // fetching the row and returning the value
+      return $statement->fetch();
+
+    } catch (PDOException $e) {
+      // Hnadling the error
+      errorHandler(null, null, $e);
+    }
+  }
+
+  /**
    * Finds the user from the database with provided username with the password.
    *
    * @param string $username - username of the user

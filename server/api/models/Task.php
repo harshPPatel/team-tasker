@@ -119,7 +119,7 @@ class Task {
         'task' => $task->task,
         'status' => (int)$task->status,
         'urgency' => (int)$task->urgency,
-        'description' => htmlspecialchars($task['description']),
+        'description' => htmlspecialchars($task->description),
         'dueDate' => $task->dueDate,
         'userId' => (int)$userId,
         'groupId' => property_exists($task, 'groupId')
