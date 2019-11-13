@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 $data = json_decode(file_get_contents("php://input"));
 
 // Validating the user
-validateUser($data);
+$validatedData = validateUser($data);
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -24,20 +24,20 @@ $db = $database->getConnection();
 $user = new User($db);
 
 // Checking if user already exists in the database
-$result = $user->getSingleWithPassword($data->username);
+$result = $user->getSingleWithPassword($validatedData['username']);
 
 // If user does not exists than creating new user in database
 if ($result == null) {
 
   // Encrypting the password
-  $encryptPassword = password_hash($data->password, PASSWORD_BCRYPT);
+  $encryptPassword = password_hash($validatedData['password'], PASSWORD_BCRYPT);
 
   // Creating new user in database
-  $user->create($data->username, $encryptPassword);
+  $user->create($validatedData['username'], $encryptPassword);
 
   // Preparing return message
   $message = [
-    'username' => $data->username,
+    'username' => $validatedData['username'],
     'created_at' => time(),
   ];
 

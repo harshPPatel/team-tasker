@@ -19,7 +19,7 @@ $decoded = verifyToken();
 $data = json_decode(file_get_contents("php://input"));
 
 // Verifying the data
-validateAssignedTask($data);
+$validatedData = validateAssignedTask($data);
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -36,22 +36,22 @@ if ($authenticatedUser['role'] != 1) {
     new Exception('User is not a valid admin of the website'));
 }
 
-if (property_exists($data, 'userId')) {
-  $result = $user->getSingleFromId($data->userId);
-  if (!$result || $result == null) {
-    errorHandler(
-      404,
-      'Assigned Task\'s User Not Found',
-      new Exception('The user with provided UserId does not exists in database'));
-  }
+
+$assignedUser = $user->getSingleFromId($validatedData['userId']);
+if (!$assignedUser || $assignedUser == null) {
+  errorHandler(
+    404,
+    'Assigned Task\'s User Not Found',
+    new Exception('The user with provided UserId does not exists in database'));
 }
 
 // Creating instance of Group to manipulate group in database
 $assignedTask = new AssignedTask($db);
 
 try {
+
   // Creating group in database
-  $result = $assignedTask->create($data);
+  $result = $assignedTask->create($validatedData);
 
   // Preparing return message
   $message = [

@@ -1,0 +1,9 @@
+# This file prevents users direct access to the utilities files
+
+# Setting for showing index view
+Options +Indexes
+IndexOptions FancyIndexing
+
+<Files API.php>
+  deny from all
+</Files>

@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 $decoded = verifyToken();
 
 // Verifying the data
-validateGroup('image');
+$validatedData = validateGroup('image');
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -38,10 +38,10 @@ $image = new Image('image', $authenticatedUser['username']);
 try {
   $groupImage = $image->upload();
 
-  $imageEncoded = filter_var($groupImage, FILTER_SANITIZE_ENCODED);
+  $imageEncoded = urlencode(filter_var($groupImage, FILTER_SANITIZE_URL));
 
   // Creating group in database
-  $result = $group->create($_POST['name'], $imageEncoded, $authenticatedUser['userId']);
+  $result = $group->create($validatedData['name'], $imageEncoded, $authenticatedUser['userId']);
 
   // Preparing return message
   $message = [

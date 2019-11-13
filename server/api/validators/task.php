@@ -37,6 +37,17 @@ function validateTask($data) {
       new Exception('Values does not satisfy provided data guidelines')
     );
   }
+
+  return [
+    'task' => filter_var($task, FILTER_SANITIZE_STRING),
+    'status' => filter_var($status, FILTER_SANITIZE_NUMBER_INT),
+    'urgency' => filter_var($urgency, FILTER_SANITIZE_NUMBER_INT),
+    'description' => filter_var($description, FILTER_SANITIZE_STRING),
+    'dueDate' => filter_var($dueDate, FILTER_SANITIZE_STRING),
+    'groupId' => ($groupId == null)
+                  ? null
+                  : filter_var($data->groupId, FILTER_SANITIZE_NUMBER_INT),
+  ];
 }
 
 ?>

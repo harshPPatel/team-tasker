@@ -34,9 +34,9 @@ $authenticatedUser = $user->getSingle($decoded->username);
 $image = new Image('image', 'assignedTasks');
 
 try {
-  $groupImage = $image->upload();
+  $taskImage = $image->upload();
 
-  $imageEncoded = filter_var($groupImage, FILTER_SANITIZE_ENCODED);
+  $imageEncoded = urlencode(filter_var($taskImage, FILTER_SANITIZE_URL));
 
   // Creating group in database
   $result = $assigendTaskImage->create($imageEncoded);

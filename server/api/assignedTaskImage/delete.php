@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 $decoded = verifyToken();
 
 // Verifying the data
-validateDeleteAssignedTaskImage('id');
+$validatedData = validateDeleteAssignedTaskImage('id');
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -39,7 +39,7 @@ if ($authenticatedUser['role'] != 1) {
 
 $image = new Image('image', $authenticatedUser['username']);
 
-$resultTemp = $assignedTaskImage->getSingle($_POST['id']);
+$resultTemp = $assignedTaskImage->getSingle($validatedData['id']);
 
 if ($resultTemp == null) {
   errorHandler(404,

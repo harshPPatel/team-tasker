@@ -29,15 +29,16 @@ $task = new Task($db);
 
 $authenticatedUser = $user->getSingle($decoded->username);
 
-if (isset($_GET['groupId']) && $_GET['groupId'] && intval($_GET['groupId']) !== 0) {
+if (isset($_GET['groupId']) && $_GET['groupId'] && is_numeric($_GET['groupId'])) {
+  $groupId = filter_var($_GET['groupId'], FILTER_SANITIZE_NUMBER_INT);
   $group = new Group($db);
-  $group->getSingle($_GET['groupId']);
+  $group->getSingle($groupId);
   if (!$group || $group == null) {
     errorHandler(404,
       'Group Not Found',
       new Exception('The Group with provided GroupId does not exists'));
   }
-  $result = $task->getAllUserGroupTasks($_GET['groupId'], $authenticatedUser['userId']);
+  $result = $task->getAllUserGroupTasks($groupId, $authenticatedUser['userId']);
 } else {
   $result = $task->getAllUserTasks($authenticatedUser['userId']);
 }

@@ -31,6 +31,8 @@ if (!is_numeric($data->assignedTaskId)) {
     new Exception('Assigned Task ID is not a valid type'));
 }
 
+$assignedTaskId = filter_var($data->assignedTaskId, FILTER_SANITIZE_NUMBER_INT);
+
 // Establishing the connection to the database
 $db = $database->getConnection();
 
@@ -49,7 +51,7 @@ if ($authenticatedUser['role'] != 1) {
 // Creating instance of Group to manipulate group in database
 $assignedTask = new AssignedTask($db);
 
-$tempResult = $assignedTask->getSingle($data->assignedTaskId);
+$tempResult = $assignedTask->getSingle($assignedTaskId);
 
 if (!$tempResult || $tempResult == null) {
   errorHandler(

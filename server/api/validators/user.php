@@ -17,8 +17,8 @@ function validateUser($data) {
   }
 
   // Getting values from $data
-  $username = $data->username;
-  $password = $data->password;
+  $username = trim($data->username);
+  $password = trim($data->password);
   $confirmPassword = property_exists($data, 'confirmPassword')
     ? $data->confirmPassword
     : null;
@@ -38,7 +38,10 @@ function validateUser($data) {
   }
 
   // Returning true if data is valid
-  return true;
+  return [
+    'username' => filter_var($username, FILTER_SANITIZE_STRING),
+    'password' => filter_var($password, FILTER_SANITIZE_STRING),
+  ];
 }
 
 ?>

@@ -19,7 +19,7 @@ $decoded = verifyToken();
 $data = json_decode(file_get_contents("php://input"));
 
 // Verifying the data
-validateUpdateAssignedTaskForUser($data);
+$validatedData = validateUpdateAssignedTaskForUser($data);
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -39,7 +39,7 @@ if ($authenticatedUser['role'] == 1) {
 // Creating instance of Group to manipulate group in database
 $assignedTask = new AssignedTask($db);
 
-$tempResult = $assignedTask->getSingle($data->assignedTaskId);
+$tempResult = $assignedTask->getSingle($validatedData['assignedTaskId']);
 
 if (!$tempResult || $tempResult == null) {
   errorHandler(
@@ -48,9 +48,16 @@ if (!$tempResult || $tempResult == null) {
     new Exception('Assigend Task does not exists on the database'));
 }
 
+if ($tempResult['userId'] != $authenticatedUser['userId']) {
+  errorHandler(
+    401,
+    'Unauthorized request',
+    new Exception('Assigend Task does not belongs to logged in user'));
+}
+
 try {
   // Creating group in database
-  $result = $assignedTask->updateUserTask($data->status, $tempResult['assignedTaskId'], $authenticatedUser['userId']);
+  $result = $assignedTask->updateUserTask($validatedData['status'], $tempResult['assignedTaskId'], $authenticatedUser['userId']);
 
   // Preparing return message
   $message = [

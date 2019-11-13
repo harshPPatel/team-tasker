@@ -97,16 +97,14 @@ class Task {
 
     // Binding the values
     $bind_values = [
-      ':task' => $task->task,
-      ':status' => (int)$task->status,
-      ':urgency' => (int)$task->urgency,
-      ':description' => $task->description,
-      ':dueDate' => (int)$task->dueDate,
+      ':task' => $task['task'],
+      ':status' => $task['status'],
+      ':urgency' => $task['urgency'],
+      ':description' => htmlspecialchars($task['description'], ENT_QUOTES),
+      ':dueDate' => $task['dueDate'],
       ':userId' => $userId,
-      ':groupId' => property_exists($task, 'groupId')
-        ? $task->groupId
-        : null,
-      ':createdAt' => (int)$time,
+      ':groupId' => $task['groupId'],
+      ':createdAt' => $time,
     ];
 
     // die(print_r($bind_values));
@@ -116,16 +114,14 @@ class Task {
       $statement->execute($bind_values);
       // die(print_r($statement));
       return [
-        'task' => $task->task,
-        'status' => (int)$task->status,
-        'urgency' => (int)$task->urgency,
-        'description' => htmlspecialchars($task->description),
-        'dueDate' => $task->dueDate,
-        'userId' => (int)$userId,
-        'groupId' => property_exists($task, 'groupId')
-          ? (int)$task->groupId
-          : null,
-        'createdAt' => (int)$time,
+        'task' => $task['task'],
+        'status' => $task['status'],
+        'urgency' => $task['urgency'],
+        'description' => htmlspecialchars_decode($task['description'], ENT_QUOTES),
+        'dueDate' => $task['dueDate'],
+        'userId' => $userId,
+        'groupId' => $task['groupId'],
+        'createdAt' => $time,
       ];
     } catch (PDOException $e) {
       // Handling the error
@@ -146,28 +142,28 @@ class Task {
 
     // Preparing the binding values
     $bind_values = [
-      ':task' => $task->task,
-      ':status' => (int)$task->status,
-      ':urgency' => (int)$task->urgency,
-      ':description' => htmlspecialchars($task->description),
-      ':dueDate' => (int)$task->dueDate,
-      ':modifiedAt' => (int)$time,
-      ':groupId' => (int)$task->groupId,
-      ':taskId' => (int)$taskId,
-      ':userId' => (int)$userId,
+      ':task' => $task['task'],
+      ':status' => $task['status'],
+      ':urgency' => $task['urgency'],
+      ':description' => htmlspecialchars($task['description'], ENT_QUOTES),
+      ':dueDate' => $task['dueDate'],
+      ':modifiedAt' => $time,
+      ':groupId' => $task['groupId'],
+      ':taskId' => $taskId,
+      ':userId' => $userId,
     ];
 
     try {
       // Binding values and executing the query
       $statement->execute($bind_values);
       return [
-        'task' => $task->task,
-        'status' => (int)$task->status,
-        'urgency' => (int)$task->urgency,
-        'description' => $task->description,
-        'dueDate' => (int)$task->dueDate,
-        'modifiedAt' => (int)$time,
-        'groupId' => (int)$task->groupId,
+        'task' => $task['task'],
+        'status' => $task['status'],
+        'urgency' => $task['urgency'],
+        'description' => htmlspecialchars_decode($task['description'], ENT_QUOTES),
+        'dueDate' => $task['dueDate'],
+        'modifiedAt' => $time,
+        'groupId' => $task['groupId'],
       ];
     } catch (PDOException $e) {
       // Handling the error

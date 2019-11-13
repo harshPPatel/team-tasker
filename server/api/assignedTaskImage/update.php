@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 $decoded = verifyToken();
 
 // Verifying the data
-validateUpdateAssignedTaskImage('image', 'id');
+$validatedData = validateUpdateAssignedTaskImage('image', 'id');
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -39,7 +39,7 @@ if ($authenticatedUser['role'] != 1) {
 
 $image = new Image('image', 'assignedTasks');
 
-$resultTemp = $assigendTaskImage->getSingle($_POST['id']);
+$resultTemp = $assigendTaskImage->getSingle($validatedData['id']);
 
 if (!$resultTemp || $resultTemp == null) {
   errorHandler(404,
@@ -48,16 +48,16 @@ if (!$resultTemp || $resultTemp == null) {
 }
 
 try {
-  if (isset($_FILES['image'])) {
+  if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
     $taskImage = $image->upload();
-    $imageEncoded = filter_var($taskImage, FILTER_SANITIZE_ENCODED);
+    $imageEncoded = urlencode(filter_var($taskImage, FILTER_SANITIZE_URL));
     $image->remove(urldecode($resultTemp['image']));
   } else {
     $imageEncoded = $resultTemp['image'];
   }
 
   // Creating group in database
-  $result = $assigendTaskImage->update($imageEncoded, $_POST['id']);
+  $result = $assigendTaskImage->update($imageEncoded, $validatedData['id']);
 
   // Preparing return message
   $message = [

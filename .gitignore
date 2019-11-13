@@ -139,3 +139,6 @@ _todo.md
 
 # .env file
 .env
+
+# sql backups folder
+backup/

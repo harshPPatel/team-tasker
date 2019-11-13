@@ -30,6 +30,8 @@ if (!is_numeric($data->taskId)) {
     new Exception('TaskId is not valid type (integer).'));
 }
 
+$taskId = filter_var($data->taskId, FILTER_SANITIZE_NUMBER_INT);
+
 // Establishing the connection to the database
 $db = $database->getConnection();
 
@@ -42,7 +44,7 @@ $task = new Task($db);
 // Getting user from database
 $authenticatedUser = $user->getSingle($decoded->username);
 
-$taskDatabase = $task->getSingle($data->taskId);
+$taskDatabase = $task->getSingle($taskId);
 
 if (!$taskDatabase || $taskDatabase == null) {
   errorHandler(404,

@@ -19,7 +19,7 @@ $decoded = verifyToken();
 $data = json_decode(file_get_contents("php://input"));
 
 // Verifying the data
-validateUpdateAssignedTask($data);
+$validatedData = validateUpdateAssignedTask($data);
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -37,7 +37,8 @@ if ($authenticatedUser['role'] != 1) {
 }
 
 
-$assignedUser = $user->getSingleFromId($data->userId);
+$assignedUser = $user->getSingleFromId($validatedData['userId']);
+
 if (!$assignedUser || $assignedUser == null) {
   errorHandler(
     404,
@@ -48,7 +49,7 @@ if (!$assignedUser || $assignedUser == null) {
 // Creating instance of Group to manipulate group in database
 $assignedTask = new AssignedTask($db);
 
-$tempResult = $assignedTask->getSingle($data->assignedTaskId);
+$tempResult = $assignedTask->getSingle($validatedData['assignedTaskId']);
 
 if (!$tempResult || $tempResult == null) {
   errorHandler(
@@ -59,7 +60,7 @@ if (!$tempResult || $tempResult == null) {
 
 try {
   // Creating group in database
-  $result = $assignedTask->update($data, $tempResult['assignedTaskId']);
+  $result = $assignedTask->update($validatedData, $tempResult['assignedTaskId']);
 
   // Preparing return message
   $message = [

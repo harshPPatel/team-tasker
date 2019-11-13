@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 $decoded = verifyToken();
 
 // Verifying the data
-validateUpdateGroup('image', 'id');
+$validatedData = validateUpdateGroup('image', 'id');
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -35,7 +35,7 @@ $authenticatedUser = $user->getSingle($decoded->username);
 
 $image = new Image('image', $authenticatedUser['username']);
 
-$groupResult = $group->getSingle($_POST['id']);
+$groupResult = $group->getSingle($validatedData['id']);
 
 if (!$groupResult || $groupResult == null) {
   errorHandler(404,
@@ -52,14 +52,14 @@ if ($groupResult['userId'] !== $authenticatedUser['userId']) {
 try {
   if (isset($_FILES['image'])) {
     $groupImage = $image->upload();
-    $imageEncoded = filter_var($groupImage, FILTER_SANITIZE_ENCODED);
+    $imageEncoded = urlencode(filter_var($groupImage, FILTER_SANITIZE_URL));
     $image->remove(urldecode($groupResult['image']));
   } else {
     $imageEncoded = $groupResult['image'];
   }
 
   // Creating group in database
-  $result = $group->update($groupResult['groupId'], $_POST['name'], $imageEncoded);
+  $result = $group->update($groupResult['groupId'], $validatedData['name'], $imageEncoded);
 
   // Preparing return message
   $message = [

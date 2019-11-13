@@ -20,12 +20,12 @@ $decoded = verifyToken();
 $data = json_decode(file_get_contents("php://input"));
 
 // Verifying the data
-validateTask($data);
+$validatedData = validateTask($data);
 
 // Establishing the connection to the database
 $db = $database->getConnection();
 
-if (property_exists($data, 'groupId')) {
+if ($validatedData['groupId'] !== null) {
   $group = new Group($db);
   $result = $group->getSingle($data->groupId);
   if (!$result || $result == null) {
@@ -47,7 +47,7 @@ $authenticatedUser = $user->getSingle($decoded->username);
 
 try {
   // Creating group in database
-  $result = $task->create($data, $authenticatedUser['userId']);
+  $result = $task->create($validatedData, $authenticatedUser['userId']);
 
   // Preparing return message
   $message = [

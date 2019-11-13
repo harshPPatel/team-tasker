@@ -71,8 +71,8 @@ class Group {
     $bind_values = [
       ':groupName' => $name,
       ':groupImage' => $image,
-      ':groupTime' => (int)$time,
-      ':groupUser' => (int)$userId,
+      ':groupTime' => $time,
+      ':groupUser' => $userId,
     ];
 
     // die(print_r($bind_values));

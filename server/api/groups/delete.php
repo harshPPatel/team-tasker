@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 $decoded = verifyToken();
 
 // Verifying the data
-validateDeleteGroup('id');
+$validatedData = validateDeleteGroup('id');
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -35,7 +35,7 @@ $authenticatedUser = $user->getSingle($decoded->username);
 
 $image = new Image('image', $authenticatedUser['username']);
 
-$groupResult = $group->getSingle($_POST['id']);
+$groupResult = $group->getSingle($validatedData['id']);
 
 if ($groupResult == null) {
   errorHandler(404,

@@ -19,8 +19,6 @@ function validateAssigendTaskImage($imageFieldName) {
     );
   }
 
-  // Sanitize data here and return it in array!
-
   // Returning true if data is valid
   return true;
 }
@@ -54,7 +52,9 @@ function validateUpdateAssignedTaskImage($imageFieldName, $idFieldName) {
   // Sanitize data here and return it in array!
 
   // Returning true if data is valid
-  return true;
+  return [
+    "{$idFieldName}" => filter_var($_POST["{$idFieldName}"], FILTER_SANITIZE_NUMBER_INT),
+  ];
 }
 
 function validateDeleteAssignedTaskImage($idFieldName) {
@@ -75,10 +75,10 @@ function validateDeleteAssignedTaskImage($idFieldName) {
     );
   }
 
-  // Sanitize data here and return it in array!
-
   // Returning true if data is valid
-  return true;
+  return [
+    "{$idFieldName}" => filter_var($_POST["{$idFieldName}"], FILTER_SANITIZE_NUMBER_INT),
+  ];
 }
 
 ?>

@@ -20,7 +20,7 @@ function validateGroup($imageFieldName) {
   }
 
   // Getting values from $data
-  $name = $_POST['name'];
+  $name = trim($_POST['name']);
 
   // Validating all properties
   $isValidGroupName = preg_match('/^[a-zA-Z0-9]{2,20}$/', $name);
@@ -37,7 +37,9 @@ function validateGroup($imageFieldName) {
   // Sanitize data here and return it in array!
 
   // Returning true if data is valid
-  return true;
+  return [
+    'name' => filter_var($name, FILTER_SANITIZE_STRING),
+  ];
 }
 
 function validateUpdateGroup($imageFieldName, $idFieldName) {
@@ -50,7 +52,7 @@ function validateUpdateGroup($imageFieldName, $idFieldName) {
     );
   }
 
-  if (intval($_POST["{$idFieldName}"]) === 0) {
+  if (!is_numeric($_POST["{$idFieldName}"])) {
     errorHandler(
       405,
       'Invalid Data',
@@ -67,7 +69,8 @@ function validateUpdateGroup($imageFieldName, $idFieldName) {
   }
 
   // Getting values from $data
-  $name = $_POST['name'];
+  $groupId = $_POST["{$idFieldName}"];
+  $name = trim($_POST['name']);
 
   // Validating all properties
   $isValidUser = preg_match('/^[a-zA-Z0-9]{2,20}$/', $name);
@@ -84,7 +87,10 @@ function validateUpdateGroup($imageFieldName, $idFieldName) {
   // Sanitize data here and return it in array!
 
   // Returning true if data is valid
-  return true;
+  return [
+    "{$idFieldName}" => filter_var($groupId, FILTER_SANITIZE_NUMBER_INT),
+    'name' => filter_var($groupId, FILTER_SANITIZE_STRING),
+  ];
 }
 
 function validateDeleteGroup($idFieldName) {
@@ -97,7 +103,7 @@ function validateDeleteGroup($idFieldName) {
     );
   }
 
-  if (intval($_POST["{$idFieldName}"]) === 0) {
+  if (!is_numeric($_POST["{$idFieldName}"])) {
     errorHandler(
       405,
       'Invalid Data',
@@ -105,10 +111,12 @@ function validateDeleteGroup($idFieldName) {
     );
   }
 
-  // Sanitize data here and return it in array!
+  $groupId = $_POST["{$idFieldName}"];
 
   // Returning true if data is valid
-  return true;
+  return [
+    "{$idFieldName}" => filter_var($groupId, FILTER_SANITIZE_NUMBER_INT),
+  ];
 }
 
 ?>

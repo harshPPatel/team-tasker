@@ -20,7 +20,7 @@ $decoded = verifyToken();
 $data = json_decode(file_get_contents("php://input"));
 
 // Verifying the data
-validateTask($data);
+$validatedData = validateTask($data);
 
 if (!property_exists($data, 'taskId')) {
   errorHandler(422,
@@ -34,12 +34,14 @@ if (!is_numeric($data->taskId)) {
     new Exception('TaskId is not valid type (integer).'));
 }
 
+$taskId = filter_var($data->taskId, FILTER_SANITIZE_NUMBER_INT);
+
 // Establishing the connection to the database
 $db = $database->getConnection();
 
-if (property_exists($data, 'groupId')) {
+if ($validatedData != null) {
   $group = new Group($db);
-  $result = $group->getSingle($data->groupId);
+  $result = $group->getSingle($validatedData['groupId']);
   if (!$result || $result == null) {
     errorHandler(
       404,
@@ -57,7 +59,7 @@ $task = new Task($db);
 // Getting user from database
 $authenticatedUser = $user->getSingle($decoded->username);
 
-$taskDatabase = $task->getSingle($data->taskId);
+$taskDatabase = $task->getSingle($taskId);
 
 if (!$taskDatabase || $taskDatabase == null) {
   errorHandler(404,
@@ -73,7 +75,7 @@ if ($taskDatabase['userId'] !== $authenticatedUser['userId']) {
 
 try {
   // Creating group in database
-  $result = $task->update($data, $taskDatabase['taskId'], $authenticatedUser['userId']);
+  $result = $task->update($validatedData, $taskDatabase['taskId'], $authenticatedUser['userId']);
 
   // Preparing return message
   $message = [
