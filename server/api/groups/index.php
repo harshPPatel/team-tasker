@@ -14,8 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 
 $decoded = verifyToken();
 
-// Decoding json data returned from request
-$data = json_decode(file_get_contents("php://input"));
 
 // Establishing the connection to the database
 $db = $database->getConnection();
