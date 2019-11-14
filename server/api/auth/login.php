@@ -53,7 +53,7 @@ if ($result != null) {
   // Preparing return message
   $message = [
     'username' => $result['username'],
-    'logged_in_at' => time(),
+    'logged_in_at' => date("Y-m-d H:i:s"),
     'token' => "Bearer {$token}",
   ];
 

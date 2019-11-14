@@ -67,7 +67,7 @@ try {
     'username' => $authenticatedUser['username'],
     'taskId' => $taskDatabase['taskId'],
     'message' => 'Task deleted successfully',
-    'deleted_at' => time(),
+    'deleted_at' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

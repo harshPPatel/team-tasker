@@ -47,7 +47,7 @@ try {
     'group' => [
       'image' => urldecode($result['image']),
     ],
-    'created_at' => time(),
+    'created_at' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

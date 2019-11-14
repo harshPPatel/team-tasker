@@ -8,7 +8,7 @@
  */
 function validateUser($data) {
   // Throwing the error if enough data is not provided
-  if (!$data || !$data->username || !$data->password) {
+  if (!$data || !property_exists($data, 'username') || !property_exists($data, 'password')) {
     errorHandler(
       405,
       'Insuffecient data is supplied',

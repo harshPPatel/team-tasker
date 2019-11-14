@@ -57,7 +57,7 @@ try {
     'username' => $authenticatedUser['username'],
     'assignedTaskImage' => $result,
     'message' => 'Assigned Task Image deleted successfully',
-    'deletedAt' => time(),
+    'deletedAt' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

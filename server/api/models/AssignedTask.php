@@ -80,7 +80,7 @@ class AssignedTask {
 
   public function create($task) {
     // die(gettype($image));
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "INSERT INTO {$this->table_name}
               (`task`, `status`, `urgency`, `description`, `dueDate`, `userId`, `createdAt`)
@@ -119,7 +119,7 @@ class AssignedTask {
   }
 
   public function update($task, $assignedTaskId) {
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "UPDATE {$this->table_name}
               SET task=:task, status=:status, urgency=:urgency, description=:description, dueDate=:dueDate, userId=:userId, modifiedAt=:modifiedAt
@@ -131,13 +131,13 @@ class AssignedTask {
     // Preparing the binding values
     $bind_values = [
       ':task' => $task['task'],
-      ':status' => (int)$task['status'],
-      ':urgency' => (int)$task['urgency'],
+      ':status' => $task['status'],
+      ':urgency' => $task['urgency'],
       ':description' => $task['description'],
-      ':dueDate' => (int)$task['dueDate'],
-      ':modifiedAt' => (int)$time,
-      ':assignedTaskId' => (int)$assignedTaskId,
-      ':userId' => (int)$task['userId'],
+      ':dueDate' => $task['dueDate'],
+      ':modifiedAt' => $time,
+      ':assignedTaskId' => $assignedTaskId,
+      ':userId' => $task['userId'],
     ];
 
     try {
@@ -145,11 +145,11 @@ class AssignedTask {
       $statement->execute($bind_values);
       return [
         'task' => $task['task'],
-        'status' => (int)$task['status'],
-        'urgency' => (int)$task['urgency'],
+        'status' => $task['status'],
+        'urgency' => $task['urgency'],
         'description' => $task['description'],
-        'dueDate' => (int)$task['dueDate'],
-        'modifiedAt' => (int)$time,
+        'dueDate' => $task['dueDate'],
+        'modifiedAt' => $time,
       ];
     } catch (PDOException $e) {
       // Handling the error
@@ -158,7 +158,7 @@ class AssignedTask {
   }
 
   public function updateUserTask($taskStatus, $assignedTaskId, $userId) {
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "UPDATE {$this->table_name}
               SET status=:status, modifiedAt=:modifiedAt
@@ -170,20 +170,20 @@ class AssignedTask {
 
     // Preparing the binding values
     $bind_values = [
-      ':status' => (int)$taskStatus,
-      ':modifiedAt' => (int)$time,
-      ':assignedTaskId' => (int)$assignedTaskId,
-      ':userId' => (int)$userId,
+      ':status' => $taskStatus,
+      ':modifiedAt' => $time,
+      ':assignedTaskId' => $assignedTaskId,
+      ':userId' => $userId,
     ];
 
     try {
       // Binding values and executing the query
       $statement->execute($bind_values);
       return [
-        'assignedTaskId' => (int)$assignedTaskId,
-        'status' => (int)$taskStatus,
-        'userId' => (int)$userId,
-        'modifiedAt' => (int)$time,
+        'assignedTaskId' => $assignedTaskId,
+        'status' => $taskStatus,
+        'userId' => $userId,
+        'modifiedAt' => $time,
       ];
     } catch (PDOException $e) {
       // Handling the error

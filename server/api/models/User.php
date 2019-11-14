@@ -171,7 +171,7 @@ class User {
    */
   function create($username, $password) {
     // Time
-    $time = time();
+    $time = date("Y-m-d H:i:s");
 
     // Creating the query
     $query = "INSERT INTO {$this->table_name} (username, password, createdAt)
@@ -204,9 +204,10 @@ class User {
    * @return void
    */
   function update($username, $password, $role = 0) {
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "UPDATE {$this->table_name}
-              SET password=:password, role=:role
+              SET password=:password, role=:role, modifiedAt=:modifiedAt
               WHERE username=:username;";
     // Preparing the query
     $statement = $this->db->prepare($query);
@@ -216,6 +217,7 @@ class User {
       ':username' => $username,
       ':password' => $password,
       ':role' => $role,
+      ':modifiedAt' => $time,
     ];
 
     try {

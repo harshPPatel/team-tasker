@@ -18,7 +18,7 @@ $message = [
   'message' => 'Token is verified succesfully. User is autorized to access the data.',
   'isLoggedIn' => true,
   'username' => $decoded->username,
-  'response_time' => time(),
+  'response_time' => date("Y-m-d H:i:s"),
 ];
 
 // Returning message in json format

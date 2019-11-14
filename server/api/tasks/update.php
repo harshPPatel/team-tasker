@@ -81,7 +81,7 @@ try {
   $message = [
     'username' => $authenticatedUser['username'],
     'task' => $result,
-    'modified_at' => time(),
+    'modified_at' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

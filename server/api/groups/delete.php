@@ -45,7 +45,7 @@ if ($groupResult == null) {
 
 try {
   // Creating group in database
-  $result = $group->delete($groupResult['groupId']);
+  $result = $group->delete($groupResult['groupId'], $authenticatedUser['userId']);
   $image->remove(urldecode($groupResult['image']));
 
   // Preparing return message
@@ -55,7 +55,7 @@ try {
       'groupId' => $result['groupId'],
     ],
     'message' => 'Group deleted successfully',
-    'deletedAt' => time(),
+    'deletedAt' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

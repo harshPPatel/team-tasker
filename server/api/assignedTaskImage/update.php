@@ -68,7 +68,7 @@ try {
       'modifiedAt' => $result['modifiedAt'],
     ],
     'message' => 'Assigned Task Image updated successfully',
-    'modifiedAt' => time(),
+    'modifiedAt' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

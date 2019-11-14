@@ -55,15 +55,18 @@ class AssignedTaskImage {
 
   public function create($image) {
     // die(gettype($image));
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "INSERT INTO {$this->table_name}
-              (`image`) VALUES (:image);";
+              (`image`, `createdAt`) VALUES (:image, :createdAt);";
     // Preparing the query
     $statement = $this->db->prepare($query);
 
     // Binding the values
-    $bind_values = [ ':image' => $image ];
+    $bind_values = [
+      ':image' => $image,
+      ':createdAt' => $time
+    ];
 
     try {
       // Executing the query
@@ -78,7 +81,7 @@ class AssignedTaskImage {
   }
 
   public function update($image, $assignedTaskImageId) {
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "UPDATE {$this->table_name}
               SET image=:image, modifiedAt=:modifiedAt
@@ -90,8 +93,8 @@ class AssignedTaskImage {
     // Preparing the binding values
     $bind_values = [
       ':image' => $image,
-      ':modifiedAt' => (int)$time,
-      ':assignedTaskImageId' => (int)$assignedTaskImageId,
+      ':modifiedAt' => $time,
+      ':assignedTaskImageId' => $assignedTaskImageId,
     ];
 
     try {
@@ -99,8 +102,8 @@ class AssignedTaskImage {
       $statement->execute($bind_values);
       return [
         'image' => $image,
-        'modifiedAt' => (int)$time,
-        'assignedTaskImageId' => (int)$assignedTaskImageId,
+        'modifiedAt' => $time,
+        'assignedTaskImageId' => $assignedTaskImageId,
       ];
     } catch (PDOException $e) {
       // Handling the error

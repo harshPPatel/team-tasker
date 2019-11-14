@@ -87,7 +87,7 @@ class Task {
 
   public function create($task, $userId) {
     // die(gettype($image));
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "INSERT INTO {$this->table_name}
               (`task`, `status`, `urgency`, `description`, `dueDate`, `userId`, `groupId`, `createdAt`)
@@ -130,7 +130,7 @@ class Task {
   }
 
   public function update($task, $taskId, $userId) {
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "UPDATE {$this->table_name}
               SET task=:task, status=:status, urgency=:urgency, description=:description, dueDate=:dueDate, groupId=:groupId, modifiedAt=:modifiedAt

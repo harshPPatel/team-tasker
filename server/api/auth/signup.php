@@ -38,7 +38,7 @@ if ($result == null) {
   // Preparing return message
   $message = [
     'username' => $validatedData['username'],
-    'created_at' => time(),
+    'created_at' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

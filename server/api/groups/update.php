@@ -59,7 +59,7 @@ try {
   }
 
   // Creating group in database
-  $result = $group->update($groupResult['groupId'], $validatedData['name'], $imageEncoded);
+  $result = $group->update($groupResult['groupId'], $validatedData['name'], $imageEncoded, $authenticatedUser['userId']);
 
   // Preparing return message
   $message = [
@@ -69,7 +69,7 @@ try {
       'image' => $result['image'],
     ],
     'message' => 'Group updated successfully',
-    'modifiedAt' => time(),
+    'modifiedAt' => date("Y-m-d H:i:s"),
   ];
 
   // Returning message in json format

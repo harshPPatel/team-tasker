@@ -59,7 +59,7 @@ class Group {
 
   public function create($name, $image, $userId) {
     // die(gettype($image));
-    $time = time();
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "INSERT INTO `{$this->table_name}`
               (`name`, `image`, `userId`, `createdAt`)
@@ -91,11 +91,13 @@ class Group {
     }
   }
 
-  public function update($groupId, $name, $image) {
+  public function update($groupId, $name, $image, $userId) {
+    $time = date("Y-m-d H:i:s");
     // Creating the query
     $query = "UPDATE {$this->table_name}
-              SET name=:name, image=:image
-              WHERE groupId=:groupId;";
+              SET name=:name, image=:image, modifiedAt=:modifiedAt
+              WHERE groupId=:groupId
+                AND userId=:userId;";
     // Preparing the query
     $statement = $this->db->prepare($query);
 
@@ -104,6 +106,8 @@ class Group {
       ':name' => $name,
       ':image' => $image,
       ':groupId' => $groupId,
+      ':userId' => $userId,
+      ':modifiedAt' => $time,
     ];
 
     try {
@@ -120,7 +124,7 @@ class Group {
     }
   }
 
-  public function delete($groupId) {
+  public function delete($groupId, $userId) {
     // Creating the query
     $query = "DELETE FROM {$this->table_name}
               WHERE groupId=:groupId;";
@@ -128,7 +132,10 @@ class Group {
     $statement = $this->db->prepare($query);
 
     // Preparing the binding values
-    $bind_values = [ ':groupId' => $groupId, ];
+    $bind_values = [
+      ':groupId' => $groupId,
+      ':userId' => $userId,
+    ];
 
     try {
       // Binding the values and executing the query
