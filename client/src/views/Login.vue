@@ -80,6 +80,7 @@ export default {
           localStorage.removeItem('authError');
           localStorage.removeItem('authSuccess');
           localStorage.token = data.token;
+          localStorage.username = data.username;
           this.isLoading = false;
           this.$router.push({ name: 'dashboard' });
         })
