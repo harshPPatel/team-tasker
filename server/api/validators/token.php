@@ -9,12 +9,23 @@ require_once('../helpers/Token.php');
  * @return stdClass decoded token payload
  */
 function verifyToken() {
-  // Throwing the error if 'Authorization' header does not exists
+// echo 'Hello' . $data . 'Hello';
+  // Throwing the error if `token` value does not exists
+  // if (!property_exists($data, 'token')) {
+  //   errorHandler(
+  //     400,
+  //     'Bad Request',
+  //     new Exception('No token found in the request')
+  //   );
+  // }
+
+  // echo json_encode(getallheaders());
+  
   if (!array_key_exists('Authorization', getallheaders())) {
     errorHandler(
       400,
       'Bad Request',
-      new Exception('No Authorization header found in the request')
+      new Exception('No token found in the request')
     );
   }
 

@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
   errorHandler(400, 'Bad Request', new Exception('Bad Request'));
 }
 
-$decoded = verifyToken();
+$decoded = verifyToken($data);
 
 // Decoding json data returned from request
 $data = json_decode(file_get_contents("php://input"));

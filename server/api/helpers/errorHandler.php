@@ -14,6 +14,7 @@ function errorHandler($error_code, $error_message, $e) {
 
   // Creating returning message
   $message = [
+    "errorCode" => $error_code,
     "message" => $error_message ? $error_message : "Internal Server Error",
     "stack" => ($_ENV['APP_ENV'] === 'development') ? $e->getTrace() : [],
     "devMessage" => ($_ENV['APP_ENV'] === 'development') ? $e->getMessage() : "",

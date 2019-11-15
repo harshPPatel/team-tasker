@@ -1,5 +1,24 @@
 <?php
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  // respond to preflights
+  if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']) && in_array($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'], ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'])) {
+    // TODO: more validation:
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+    header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Authorization');
+  } else {
+    header('Allow: GET, POST, OPTIONS, PUT, DELETE');
+  }
+  
+  header('Vary: Origin');
+  
+  // 204 No Content
+  http_response_code(200);
+  
+  exit;
+}
+
 // requiring all important files
 require_once('../../index.php');
 require_once('../models/User.php');
@@ -47,18 +66,34 @@ if ($result != null) {
   // Creating instance of JsonWebToken class
   $jwt = new JsonWebToken();
 
-  // Generating the token
-  $token = $jwt->generateToken($result['username']);
+  if ($result['role']) {
+    // Generating the token
+    $token = $jwt->generateToken($result['username']);
 
-  // Preparing return message
-  $message = [
-    'username' => $result['username'],
-    'logged_in_at' => date("Y-m-d H:i:s"),
-    'token' => "Bearer {$token}",
-  ];
+    // Preparing return message
+    $message = [
+      'username' => $result['username'],
+      'isAdmin' => true,
+      'logged_in_at' => date("Y-m-d H:i:s"),
+      'token' => "Bearer {$token}",
+    ];
 
-  // Returning message in json format
-  echo json_encode($message);
+    // Returning message in json format
+    echo json_encode($message);
+  } else {
+    // Generating the token
+    $token = $jwt->generateToken($result['username']);
+
+    // Preparing return message
+    $message = [
+      'username' => $result['username'],
+      'logged_in_at' => date("Y-m-d H:i:s"),
+      'token' => "Bearer {$token}",
+    ];
+
+    // Returning message in json format
+    echo json_encode($message);
+  }
 
 } else {
   // Throwing error if user already exists

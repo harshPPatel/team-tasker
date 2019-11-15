@@ -39,6 +39,22 @@ class JsonWebToken {
     // Returning the token
     return $jwt;
   }
+
+  /**
+   * Generates the token for the admin user
+   *
+   * @param string $username username of the admin user
+   * @return string Json Web Token for the admin user
+   */
+  function generateAdminToken($username) {
+    // Adding username to payload
+    $this->token['username'] = $username;
+    $this->token['isAdmin'] = true;
+    // Generating the token
+    $jwt = JWT::encode($this->token, $this->key);
+    // Returning the token
+    return $jwt;
+  }
   
   /**
    * Verifies the provided token and returns teh decoded data
@@ -51,6 +67,23 @@ class JsonWebToken {
     $decoded = JWT::decode($token, $this->key, array('HS256'));
     // Returing the decoded data
     return $decoded;
+  }
+  
+  /**
+   * Verifies the provided admin token and returns the decoded data
+   *
+   * @param string $token - token to verify
+   * @return array decoded payload of the jwt
+   */
+  function verifyAdminToken($token) {
+    // Decoding the token
+    $decoded = JWT::decode($token, $this->key, array('HS256'));
+    if ($decoded->isAdmin == true) {
+      // Returing the decoded data
+      return $decoded;
+    } else {
+      return false;
+    }
   }
 }
 
