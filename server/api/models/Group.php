@@ -11,7 +11,7 @@ class Group {
 
   function getSingle($groupId) {
     // Creating query to get all groups of user from database
-    $query = "SELECT groupId, name, image, userId
+    $query = "SELECT groupId, name, image, userId, createdAt, modifiedAt
               FROM {$this->table_name}
               WHERE groupId = :groupId;";
 
@@ -35,7 +35,7 @@ class Group {
 
   function getAll($userId) {
     // Creating query to get all groups of user from database
-    $query = "SELECT groupId, name, image, userId
+    $query = "SELECT groupId, name, image, userId, createdAt, modifiedAt
               FROM {$this->table_name}
               WHERE userId = :userId;";
 

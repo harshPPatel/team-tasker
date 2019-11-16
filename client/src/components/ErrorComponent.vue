@@ -1,6 +1,7 @@
 <template>
   <div class="alert alert-dismissible alert-warning">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <button type="button" class="close" data-dismiss="alert"
+      @click.prevent="clearError">&times;</button>
     <h4 class="alert-heading">Error - {{ error.errorCode }}</h4>
     <p class="mb-0">
       {{ error.message }}
@@ -11,6 +12,11 @@
 <script>
 export default {
   name: 'error-component',
-  props: ['error'],
+  props: ['error', 'field'],
+  methods: {
+    clearError() {
+      localStorage.removeItem(this.field);
+    },
+  },
 };
 </script>

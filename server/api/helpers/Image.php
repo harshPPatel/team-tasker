@@ -1,6 +1,7 @@
 <?php
 
 class Image {
+
   private $uploadFolder = CURRENT_DIR;
   private $uploadFieldName;
   private $username;
@@ -33,8 +34,8 @@ class Image {
   }
 
   private function isValidImage($temporary_path, $new_path) {
-    $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png', 'application/pdf'];
-    $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png', 'pdf'];
+    $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png', ];
+    $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png', ];
 
     // getting file extension and mime type
     $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);

@@ -1,5 +1,24 @@
 <?php
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  // respond to preflights
+  if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']) && in_array($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'], ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'])) {
+    // TODO: more validation:
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+    header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Authorization');
+  } else {
+    header('Allow: GET, POST, OPTIONS, PUT, DELETE');
+  }
+  
+  header('Vary: Origin');
+  
+  // 204 No Content
+  http_response_code(200);
+  
+  exit;
+}
+
 // requiring all important files
 require_once('../../index.php');
 require_once('../models/User.php');
@@ -16,8 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 
 $decoded = verifyToken();
 
+// echo json_encode(print_r($_POST));
+
 // Verifying the data
-$validatedData = validateGroup('image');
+$validatedData = validateGroup('addGroupImage');
 
 // Establishing the connection to the database
 $db = $database->getConnection();
@@ -33,7 +54,7 @@ $authenticatedUser = $user->getSingle($decoded->username);
 
 // die(print_r($authenticatedUser));
 
-$image = new Image('image', $authenticatedUser['username']);
+$image = new Image('addGroupImage', $authenticatedUser['username']);
 
 try {
   $groupImage = $image->upload();

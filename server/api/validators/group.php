@@ -2,7 +2,7 @@
 
 function validateGroup($imageFieldName) {
   // Throwing the error if enough data is not provided
-  if (!isset($_POST['name']) || !isset($_FILES["{$imageFieldName}"])) {
+  if (!isset($_POST['addGroupName']) || !isset($_FILES["{$imageFieldName}"])) {
     errorHandler(
       405,
       'Insuffecient data is supplied',
@@ -20,10 +20,10 @@ function validateGroup($imageFieldName) {
   }
 
   // Getting values from $data
-  $name = trim($_POST['name']);
+  $name = trim($_POST['addGroupName']);
 
   // Validating all properties
-  $isValidGroupName = preg_match('/^[a-zA-Z0-9]{2,20}$/', $name);
+  $isValidGroupName = preg_match('/^[a-zA-Z0-9 ]{2,20}$/', $name);
 
   // Throwing the error if one them property is not valid
   if (!$isValidGroupName) {
@@ -44,7 +44,7 @@ function validateGroup($imageFieldName) {
 
 function validateUpdateGroup($imageFieldName, $idFieldName) {
   // Throwing the error if enough data is not provided
-  if (!isset($_POST['name']) || !isset($_POST["{$idFieldName}"])) {
+  if (!isset($_POST['addGroupName']) || !isset($_POST["{$idFieldName}"])) {
     errorHandler(
       405,
       'Insuffecient data is supplied',
@@ -70,10 +70,10 @@ function validateUpdateGroup($imageFieldName, $idFieldName) {
 
   // Getting values from $data
   $groupId = $_POST["{$idFieldName}"];
-  $name = trim($_POST['name']);
+  $name = trim($_POST['addGroupName']);
 
   // Validating all properties
-  $isValidUser = preg_match('/^[a-zA-Z0-9]{2,20}$/', $name);
+  $isValidUser = preg_match('/^[a-zA-Z0-9 ]{2,20}$/', $name);
 
   // Throwing the error if one them property is not valid
   if (!$isValidUser) {

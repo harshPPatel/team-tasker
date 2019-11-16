@@ -31,11 +31,17 @@
           <li class="nav-item" v-if="!isLoggedIn && showSignUp">
             <router-link to="signup" class="nav-link">Sign Up</router-link>
           </li>
-          <li class="nav-item" v-if="isLoggedIn && (currentRouteName !== 'dashboard')">
-            <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
-          </li>
-          <li class="nav-item" v-if="isLoggedIn">
-            <a href="#" class="nav-link" @click.prevent="logoutUser">Logout</a>
+          <li class="nav-item dropdown" v-if="isLoggedIn">
+            <a class="nav-link dropdown-toggle" href="#"
+              id="userDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              {{ username }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="userDropdown">
+              <router-link to="/dashboard" class="dropdown-item">Dashboard</router-link>
+              <div class="dropdown-divider"></div>
+              <a href="/logout" class="dropdown-item" @click.prevent="logoutUser">Logout</a>
+            </div>
           </li>
         </ul>
       </div>
@@ -87,6 +93,9 @@ export default {
   computed: {
     currentRouteName() {
       return this.$route.name;
+    },
+    username() {
+      return localStorage.username;
     },
   },
   mounted() {

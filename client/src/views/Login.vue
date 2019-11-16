@@ -6,8 +6,9 @@
     </div>
     <hr class="mb-5">
     <form @submit.prevent="submitForm" class="col-6 mr-auto ml-auto">
-      <error-component v-if="authError" :error="authError"></error-component>
-      <success-component v-if="authSuccess" :message="authSuccess"></success-component>
+      <error-component v-if="authError" :error="authError" field="authError"></error-component>
+      <success-component v-if="authSuccess" :message="authSuccess"
+        field="authSuccess"></success-component>
       <div class="form-group">
         <label class="col-form-label" for="username">Username</label>
         <!-- add required -->
