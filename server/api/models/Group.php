@@ -127,7 +127,8 @@ class Group {
   public function delete($groupId, $userId) {
     // Creating the query
     $query = "DELETE FROM {$this->table_name}
-              WHERE groupId=:groupId;";
+              WHERE groupId=:groupId
+                AND userId=:userId;";
     // Preparing the query
     $statement = $this->db->prepare($query);
 

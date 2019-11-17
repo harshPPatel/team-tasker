@@ -14,7 +14,7 @@
   header('Content-type: application/json');
 
   // Addind database file
-  include(CURRENT_DIR . './api/config/database.php');
+  include(CURRENT_DIR . '\api\config\database.php');
 
   // creating instance of Database class
   $database = new Database();

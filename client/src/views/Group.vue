@@ -1,0 +1,106 @@
+<template>
+  <div class="container mt-5">
+    <div class="groupImage" v-if="group">
+      <img :src="group.image" :alt="group.name">
+    </div>
+    <div class="flex-container mt-4" v-if="group">
+      <div class="">
+        <h1>{{ group.name }}</h1>
+      </div>
+      <div class="ml-auto text-right">
+        <button type="button" class="btn btn-outline-danger"
+          data-toggle="modal" :data-target="`#deleteGroupModal${group.groupId}`">
+            Delete Group
+        </button>
+        <button type="button" class="btn btn-outline-info ml-3"
+          data-toggle="modal" :data-target="`#editGroupModal${group.groupId}`">
+            Edit Group
+        </button>
+        <button type="button" class="btn btn-success ml-3"
+          data-toggle="modal" data-target="#addTaskModal">Add Task</button>
+      </div>
+    </div>
+    <hr>
+    <edit-group v-if="group" :group="group" v-on:refresh-groups="refreshGroup"></edit-group>
+    <delete-group v-if="group" :groupId="group.groupId"></delete-group>
+    <add-task v-if="group" :groupId="group.groupId" v-on:refresh-tasks="refreshTasks"></add-task>
+  </div>
+</template>
+
+<script>
+import Group from '../lib/Group';
+import EditGroup from '../components/EditGroup.vue';
+import DeleteGroup from '../components/DeleteGroup.vue';
+import AddTask from '../components/AddTask.vue';
+
+export default {
+  name: 'group',
+  components: {
+    EditGroup,
+    DeleteGroup,
+    AddTask,
+  },
+  data: () => ({
+    group: null,
+    tasks: [],
+  }),
+  computed: {
+    groupId() {
+      return this.$route.params.id;
+    },
+  },
+  mounted() {
+    this.refreshGroup();
+    this.refreshTasks();
+  },
+  methods: {
+    refreshGroup() {
+      Group.getSingle(this.groupId)
+        .then((data) => {
+          if (data.count === 0) {
+            this.$router.push({
+              path: '/dashboard',
+            });
+          }
+          this.group = null;
+          this.group = data.groups;
+        })
+        .catch((err) => { console.log(err); });
+    },
+    refreshTasks() {
+
+    },
+  },
+};
+</script>
+
+
+<style lang="scss">
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  h1 {
+    margin-bottom: 0!important;
+  };
+};
+
+.groupImage {
+  height: 20vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+</style>

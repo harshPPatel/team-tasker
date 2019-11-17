@@ -5,20 +5,19 @@
       <img style="height: 200px; width: 100%; display: block;"
         :src="groupImage" :alt="`${ group.name }'s Image`">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">
+        <li class="list-group-item" v-if="!groupUser">
           <b>Group's Owner : </b> {{ username }}
+        </li>
+        <li class="list-group-item" v-if="groupUser">
+          <b>Group's Owner : </b> {{ groupUser }}
         </li>
       </ul>
       <div class="card-body">
         <router-link class="btn btn-sm btn-primary" :to="`/groups/${group.groupId}`">
           See Tasks
         </router-link>
-        <a href="#" class="btn btn-sm btn-info ml-2"
-          data-toggle="modal" :data-target="`#editGroupModal${group.groupId}`">
-          Edit Group
-        </a>
       </div>
-      <div class="card-footer text-muted">
+      <div class="card-footer text-muted" v-if="group.modifiedAt">
         <b>Last Modified At :</b> {{ group.modifiedAt }}
       </div>
     </div>
@@ -28,7 +27,7 @@
 <script>
 export default {
   name: 'group-card',
-  props: ['group'],
+  props: ['group', 'groupUser'],
   data: () => ({
     groupImage: '',
   }),

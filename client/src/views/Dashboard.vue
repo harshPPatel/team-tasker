@@ -2,7 +2,17 @@
   <div class="container mt-5">
     <div class="flex-container">
       <div class="">
-        <h1>Dashboard</h1>
+        <h1>Other Groups</h1>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <group-card :group="inboxGroup"></group-card>
+      <group-card :group="assignedTasks"></group-card>
+    </div>
+    <div class="flex-container mt-5">
+      <div class="">
+        <h1>Groups</h1>
       </div>
       <div class="ml-auto text-right">
         <button type="button" class="btn btn-success"
@@ -27,11 +37,23 @@ import Group from '../lib/Group';
 import GroupCard from '../components/GroupCard.vue';
 import AddGroup from '../components/AddGroup.vue';
 import EditGroup from '../components/EditGroup.vue';
+import InboxImage from '../assets/img/inbox-group.jpg';
+import AssignedTasksImage from '../assets/img/assigned-tasks-group.jpg';
 
 export default {
   name: 'dashboard',
   data: () => ({
     groups: [],
+    inboxGroup: {
+      groupId: 'inbox',
+      name: 'Inbox',
+      image: InboxImage,
+    },
+    assignedTasks: {
+      groupId: 'assignedTasks',
+      name: 'Assigned Tasks',
+      image: AssignedTasksImage,
+    },
   }),
   components: {
     GroupCard,

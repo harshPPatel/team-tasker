@@ -75,24 +75,24 @@ const getSingle = async (id) => {
 
 const create = async (formData) => {
   let promise;
-  const API_URL = `${config.API_URL}/groups/create.php`;
+  const API_URL = `${config.API_URL}/tasks/create.php`;
   // Making call to server
   await fetch(API_URL, {
     method: 'POST',
     headers: {
-      // 'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json',
       Authorization: localStorage.token,
     },
     // cache: false,
-    body: formData,
+    body: JSON.stringify(formData),
   })
     .then(res => res.json())
     .then((data) => {
       promise = new Promise((resolve, reject) => {
-        if (data.username) {
-          resolve(data);
-        } else {
+        if (data.errorCode) {
           reject(data);
+        } else {
+          resolve(data);
         }
       });
     })
@@ -133,40 +133,9 @@ const update = async (formData) => {
   return promise;
 };
 
-const deleteGroup = async (formData) => {
-  let promise;
-  const API_URL = `${config.API_URL}/groups/delete.php`;
-  // Making call to server
-  await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      // 'Content-Type': 'multipart/form-data',
-      Authorization: localStorage.token,
-    },
-    // cache: false,
-    body: formData,
-  })
-    .then(res => res.json())
-    .then((data) => {
-      promise = new Promise((resolve, reject) => {
-        if (data.errorCode) {
-          reject(data);
-        } else {
-          resolve(data);
-        }
-      });
-    })
-    .catch((err) => {
-      pushToErrorPage(err);
-    });
-
-  return promise;
-};
-
 export default {
   getAll,
   getSingle,
   create,
   update,
-  deleteGroup,
 };

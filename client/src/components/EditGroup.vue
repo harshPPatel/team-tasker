@@ -100,13 +100,16 @@ export default {
         formData.append('image', formFileInput.files[0], formFileInput.files[0].name);
       }
       // console.log(formData.get('editGroupImage'));
+      this.isLoading = true;
       Group.update(formData)
         .then(() => {
+          this.isLoading = false;
           this.$emit('refresh-groups');
           const closeButton = document.getElementById(`editGroupClose${this.group.groupId}`);
           closeButton.click();
         })
         .catch((err) => {
+          this.isLoading = false;
           this.serverError = err;
         });
     },

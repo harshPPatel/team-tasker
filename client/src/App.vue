@@ -21,5 +21,6 @@ export default {
 </script>
 
 <style lang="scss">
-
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
+@import "~vue-datetime/dist/vue-datetime.css";
 </style>

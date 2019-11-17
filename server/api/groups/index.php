@@ -45,7 +45,12 @@ $group = new Group($db);
 
 $authenticatedUser = $user->getSingle($decoded->username);
 
-$result = $group->getAll($authenticatedUser['userId']);
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+  $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
+  $result = $group->getSingle($id);
+} else {
+  $result = $group->getAll($authenticatedUser['userId']);
+}
 
 // If user does exists than validating user
 if ($result != null) {
