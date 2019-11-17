@@ -15,7 +15,9 @@ export default {
   props: ['error', 'field'],
   methods: {
     clearError() {
-      localStorage.removeItem(this.field);
+      if (this.field) {
+        localStorage.removeItem(this.field);
+      }
     },
   },
 };

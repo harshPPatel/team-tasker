@@ -17,6 +17,8 @@
       </div>
     </div>
     <add-group v-on:refresh-groups="refreshGroups"></add-group>
+    <edit-group v-for="group in groups" :group="group"
+      :key="group.groupId" v-on:refresh-groups="refreshGroups"></edit-group>
   </div>
 </template>
 
@@ -24,6 +26,7 @@
 import Group from '../lib/Group';
 import GroupCard from '../components/GroupCard.vue';
 import AddGroup from '../components/AddGroup.vue';
+import EditGroup from '../components/EditGroup.vue';
 
 export default {
   name: 'dashboard',
@@ -33,6 +36,7 @@ export default {
   components: {
     GroupCard,
     AddGroup,
+    EditGroup,
   },
   computed: {
     username() {
@@ -52,6 +56,7 @@ export default {
     refreshGroups() {
       Group.getAll()
         .then((data) => {
+          this.groups = null;
           this.groups = data.groups;
         })
         .catch((err) => {

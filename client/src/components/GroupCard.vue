@@ -13,7 +13,8 @@
         <router-link class="btn btn-sm btn-primary" :to="`/groups/${group.groupId}`">
           See Tasks
         </router-link>
-        <a href="" class="btn btn-sm btn-info ml-2">
+        <a href="#" class="btn btn-sm btn-info ml-2"
+          data-toggle="modal" :data-target="`#editGroupModal${group.groupId}`">
           Edit Group
         </a>
       </div>

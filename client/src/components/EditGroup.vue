@@ -1,26 +1,27 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="addGroupModal" tabindex="-1"
-    role="dialog" aria-labelledby="addGroupModalTitle" aria-hidden="true">
+  <div class="modal fade" :id="`editGroupModal${group.groupId}`" tabindex="-1"
+    role="dialog" aria-labelledby="editGroupModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Add New Group</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Edit Group</h5>
           <button type="button" class="close"
-            id="addGroupClose" data-dismiss="modal" aria-label="Close">
+            :id="`editGroupClose${group.groupId}`" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="container-fluid">
             <error-component v-if="serverError" :error="serverError"></error-component>
-            <form id="addGroupForm" @submit.prevent="submitForm">
+            <form :id="`editGroupForm${group.groupId}`" @submit.prevent="submitForm">
               <div class="row">
                 <div class="col-12 mb-3">
-                  <label class="col-form-label" for="addGroupName">Group Name</label>
+                  <label class="col-form-label"
+                    :for="`editGroupName${group.groupId}`">Group Name</label>
                   <!-- add required -->
                   <input type="text" class="form-control"
-                    placeholder="Group Name" id="addGroupName" required
+                    placeholder="Group Name" :id="`editGroupName${group.groupId}`" required
                     v-model="groupName"
                     :class="{ 'is-invalid': (groupNameError && !isValidGroupName) }"
                     @input="validateGroupName">
@@ -29,15 +30,11 @@
                   </div>
                 </div>
                 <div class="col-12 mb-3">
-                  <label class="col-form-label" for="addGroupImage">Group Image</label>
+                  <label class="col-form-label"
+                    :for="`editGroupImage${group.groupId}`">Group Image</label>
                   <!-- add required -->
                   <input type="file" class="form-control-file" accept="image/*"
-                    placeholder="Group Image" id="addGroupImage" required
-                    :class="{ 'is-invalid': (groupImageError && !isValidGroupImage) }"
-                    @input="validateGroupImage">
-                  <div class="invalid-feedback" v-if="groupImageError">
-                    {{ groupImageError }}
-                  </div>
+                    placeholder="Group Image" :id="`editGroupImage${group.groupId}`">
                 </div>
                 <div class="col-6">
                   <button type="reset" class="btn btn-info btn-block mt-4"
@@ -47,7 +44,7 @@
                 </div>
                 <div class="col-6">
                   <button type="submit" class="btn btn-primary btn-block mt-4"
-                    :disabled="!(isValidGroupName && isValidGroupImage) || isLoading">
+                    :disabled="(!isValidGroupName && groupNameError) || isLoading">
                     Submit
                   </button>
                 </div>
@@ -65,19 +62,21 @@ import ErrorComponent from './ErrorComponent.vue';
 import Group from '../lib/Group';
 
 export default {
-  name: 'add-group',
-  components: {
-    ErrorComponent,
-  },
+  name: 'edit-group',
+  props: ['group'],
   data: () => ({
     groupName: '',
     isValidGroupName: false,
-    isValidGroupImage: false,
     groupNameError: '',
-    groupImageError: '',
     isLoading: false,
     serverError: null,
   }),
+  components: {
+    ErrorComponent,
+  },
+  mounted() {
+    this.groupName = this.group.name;
+  },
   methods: {
     validateGroupName() {
       this.groupNameError = '';
@@ -91,27 +90,20 @@ export default {
         this.groupNameError = 'Invalid Group Name. Please enter alpha numeric number between 2 to 20 characters';
       }
     },
-    validateGroupImage(e) {
-      this.groupImageError = '';
-      if (e.target.value) {
-        console.log('changed');
-        this.isValidGroupImage = true;
-      } else {
-        this.isValidGroupImage = false;
-        this.groupImageError = 'Group Image is required';
-      }
-    },
     submitForm() {
-      const form = document.getElementById('addGroupForm');
-      const formFileInput = document.getElementById('addGroupImage');
+      const form = document.getElementById(`editGroupForm${this.group.groupId}`);
+      const formFileInput = document.getElementById(`editGroupImage${this.group.groupId}`);
       const formData = new FormData(form);
-      formData.append('addGroupName', this.groupName.trim());
-      formData.append('addGroupImage', formFileInput.files[0], formFileInput.files[0].name);
-      // console.log(formData.get('addGroupImage'));
-      Group.create(formData)
+      formData.append('id', this.group.groupId);
+      formData.append('name', this.groupName.trim());
+      if (formFileInput.files[0]) {
+        formData.append('image', formFileInput.files[0], formFileInput.files[0].name);
+      }
+      // console.log(formData.get('editGroupImage'));
+      Group.update(formData)
         .then(() => {
           this.$emit('refresh-groups');
-          const closeButton = document.getElementById('addGroupClose');
+          const closeButton = document.getElementById(`editGroupClose${this.group.groupId}`);
           closeButton.click();
         })
         .catch((err) => {

@@ -44,7 +44,7 @@ function validateGroup($imageFieldName) {
 
 function validateUpdateGroup($imageFieldName, $idFieldName) {
   // Throwing the error if enough data is not provided
-  if (!isset($_POST['addGroupName']) || !isset($_POST["{$idFieldName}"])) {
+  if (!isset($_POST['name']) || !isset($_POST["{$idFieldName}"])) {
     errorHandler(
       405,
       'Insuffecient data is supplied',
@@ -70,7 +70,7 @@ function validateUpdateGroup($imageFieldName, $idFieldName) {
 
   // Getting values from $data
   $groupId = $_POST["{$idFieldName}"];
-  $name = trim($_POST['addGroupName']);
+  $name = trim($_POST['name']);
 
   // Validating all properties
   $isValidUser = preg_match('/^[a-zA-Z0-9 ]{2,20}$/', $name);
@@ -89,7 +89,7 @@ function validateUpdateGroup($imageFieldName, $idFieldName) {
   // Returning true if data is valid
   return [
     "{$idFieldName}" => filter_var($groupId, FILTER_SANITIZE_NUMBER_INT),
-    'name' => filter_var($groupId, FILTER_SANITIZE_STRING),
+    'name' => filter_var($name, FILTER_SANITIZE_STRING),
   ];
 }
 
