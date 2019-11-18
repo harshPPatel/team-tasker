@@ -47,7 +47,7 @@ $authenticatedUser = $user->getSingle($decoded->username);
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
   $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
-  $result = $group->getSingle($id);
+  $result = $group->getSingle($id, $authenticatedUser['userId']);
 } else {
   $result = $group->getAll($authenticatedUser['userId']);
 }

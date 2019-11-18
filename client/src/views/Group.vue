@@ -21,24 +21,42 @@
       </div>
     </div>
     <hr>
+    <div class="row">
+      <!-- <group-card v-for="task in tasks" :group="group" :key="group.groupId"></group-card> -->
+      <task-card v-for="task in tasks" :task="task" :key="task.taskId"></task-card>
+      <div class="col-12 mt-4" v-if="tasks.length === 0">
+        <h4>No tasks found! Create tasks now!</h4>
+      </div>
+    </div>
     <edit-group v-if="group" :group="group" v-on:refresh-groups="refreshGroup"></edit-group>
     <delete-group v-if="group" :groupId="group.groupId"></delete-group>
     <add-task v-if="group" :groupId="group.groupId" v-on:refresh-tasks="refreshTasks"></add-task>
+    <edit-task v-for="task in tasks" :key="`edit-${task.taskId}`" :editTask="task"
+      v-on:refresh-tasks="refreshTasks"></edit-task>
+    <delete-task v-for="task in tasks" :key="`delete-${task.taskId}`" :taskId="task.taskId"
+      v-on:refresh-tasks="refreshTasks"></delete-task>
   </div>
 </template>
 
 <script>
 import Group from '../lib/Group';
+import Task from '../lib/Task';
 import EditGroup from '../components/EditGroup.vue';
 import DeleteGroup from '../components/DeleteGroup.vue';
+import TaskCard from '../components/TaskCard.vue';
 import AddTask from '../components/AddTask.vue';
+import EditTask from '../components/EditTask.vue';
+import DeleteTask from '../components/DeleteTask.vue';
 
 export default {
   name: 'group',
   components: {
     EditGroup,
     DeleteGroup,
+    TaskCard,
     AddTask,
+    EditTask,
+    DeleteTask,
   },
   data: () => ({
     group: null,
@@ -50,12 +68,12 @@ export default {
     },
   },
   mounted() {
-    this.refreshGroup();
-    this.refreshTasks();
+    this.refreshGroup(this.$route.params.id);
+    this.refreshTasks(this.$route.params.id);
   },
   methods: {
-    refreshGroup() {
-      Group.getSingle(this.groupId)
+    refreshGroup(id = null) {
+      Group.getSingle(id || this.groupId)
         .then((data) => {
           if (data.count === 0) {
             this.$router.push({
@@ -67,8 +85,13 @@ export default {
         })
         .catch((err) => { console.log(err); });
     },
-    refreshTasks() {
-
+    refreshTasks(id = null) {
+      Task.getAllByGroup(id || this.groupId)
+        .then((data) => {
+          this.tasks = [];
+          this.tasks = data.tasks;
+        })
+        .catch((err) => { console.log(err); });
     },
   },
 };

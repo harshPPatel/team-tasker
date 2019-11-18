@@ -16,7 +16,37 @@ const pushToErrorPage = (error, errorCode) => {
 const getAll = async () => {
   let promise;
   // const API_URL = `${config.API_URL}/auth/login.php`;
-  const API_URL = `${config.API_URL}/groups/index.php`;
+  const API_URL = `${config.API_URL}/tasks/index.php`;
+  // Making call to server
+  await fetch(API_URL, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: localStorage.token,
+    },
+  })
+    .then(res => res.json())
+    .then((data) => {
+      promise = new Promise((resolve, reject) => {
+        if (data.errorCode) {
+          reject(data);
+        } else {
+          resolve(data);
+        }
+      });
+    })
+    .catch((err) => {
+      pushToErrorPage(err);
+    });
+
+  return promise;
+};
+
+const getAllByGroup = async (groupId) => {
+  let promise;
+  // const API_URL = `${config.API_URL}/auth/login.php`;
+  const API_URL = `${config.API_URL}/tasks/index.php?groupId=${groupId}`;
   // Making call to server
   await fetch(API_URL, {
     method: 'POST',
@@ -105,7 +135,7 @@ const create = async (formData) => {
 
 const update = async (formData) => {
   let promise;
-  const API_URL = `${config.API_URL}/groups/update.php`;
+  const API_URL = `${config.API_URL}/tasks/update.php`;
   // Making call to server
   await fetch(API_URL, {
     method: 'POST',
@@ -114,7 +144,37 @@ const update = async (formData) => {
       Authorization: localStorage.token,
     },
     // cache: false,
-    body: formData,
+    body: JSON.stringify(formData),
+  })
+    .then(res => res.json())
+    .then((data) => {
+      promise = new Promise((resolve, reject) => {
+        if (data.username) {
+          resolve(data);
+        } else {
+          reject(data);
+        }
+      });
+    })
+    .catch((err) => {
+      pushToErrorPage(err);
+    });
+
+  return promise;
+};
+
+const deleteTask = async (formData) => {
+  let promise;
+  const API_URL = `${config.API_URL}/tasks/delete.php`;
+  // Making call to server
+  await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      // 'Content-Type': 'multipart/form-data',
+      Authorization: localStorage.token,
+    },
+    // cache: false,
+    body: JSON.stringify(formData),
   })
     .then(res => res.json())
     .then((data) => {
@@ -135,7 +195,9 @@ const update = async (formData) => {
 
 export default {
   getAll,
+  getAllByGroup,
   getSingle,
   create,
   update,
+  deleteTask,
 };

@@ -81,6 +81,7 @@ export default {
       }
     },
     logoutUser() {
+      localStorage.removeItem('username');
       localStorage.removeItem('token');
       this.isLoggedIn = false;
       this.showLogin = true;

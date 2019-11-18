@@ -9,17 +9,21 @@ class Group {
     $this->db = $database;
   }
 
-  function getSingle($groupId) {
+  function getSingle($groupId, $userId) {
     // Creating query to get all groups of user from database
     $query = "SELECT groupId, name, image, userId, createdAt, modifiedAt
               FROM {$this->table_name}
-              WHERE groupId = :groupId;";
+              WHERE groupId = :groupId
+                AND userId = :userId;";
 
     // Preparing the query
     $statement = $this->db->prepare($query);
 
     // Binding values
-    $bind_values = [ ':groupId' => $groupId, ];
+    $bind_values = [
+      ':groupId' => $groupId,
+      ':userId' => $userId,
+    ];
 
     try {
       // executing the query and binding the values

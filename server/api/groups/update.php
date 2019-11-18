@@ -54,7 +54,7 @@ $authenticatedUser = $user->getSingle($decoded->username);
 
 $image = new Image('image', $authenticatedUser['username']);
 
-$groupResult = $group->getSingle($validatedData['id']);
+$groupResult = $group->getSingle($validatedData['id'], $authenticatedUser['userId']);
 
 if (!$groupResult || $groupResult == null) {
   errorHandler(404,

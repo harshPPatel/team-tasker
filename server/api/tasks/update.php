@@ -1,5 +1,24 @@
 <?php
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  // respond to preflights
+  if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']) && in_array($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'], ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'])) {
+    // TODO: more validation:
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+    header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Authorization');
+  } else {
+    header('Allow: GET, POST, OPTIONS, PUT, DELETE');
+  }
+  
+  header('Vary: Origin');
+  
+  // 204 No Content
+  http_response_code(200);
+  
+  exit;
+}
+
 // requiring all important files
 require_once('../../index.php');
 require_once('../models/User.php');
@@ -39,17 +58,6 @@ $taskId = filter_var($data->taskId, FILTER_SANITIZE_NUMBER_INT);
 // Establishing the connection to the database
 $db = $database->getConnection();
 
-if ($validatedData != null) {
-  $group = new Group($db);
-  $result = $group->getSingle($validatedData['groupId']);
-  if (!$result || $result == null) {
-    errorHandler(
-      404,
-      'Task\'s Group Not Found',
-      new Exception('The Group with provided GroupId does not exists'));
-  }
-}
-
 // Creating instance of User to manipulate group in database
 $user = new User($db);
 
@@ -58,6 +66,17 @@ $task = new Task($db);
 
 // Getting user from database
 $authenticatedUser = $user->getSingle($decoded->username);
+
+if ($validatedData != null) {
+  $group = new Group($db);
+  $result = $group->getSingle($validatedData['groupId'], $authenticatedUser['userId']);
+  if (!$result || $result == null) {
+    errorHandler(
+      404,
+      'Task\'s Group Not Found',
+      new Exception('The Group with provided GroupId does not exists'));
+  }
+}
 
 $taskDatabase = $task->getSingle($taskId);
 

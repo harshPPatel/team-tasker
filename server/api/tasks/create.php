@@ -44,17 +44,6 @@ $validatedData = validateTask($data);
 // Establishing the connection to the database
 $db = $database->getConnection();
 
-if ($validatedData['groupId'] !== null) {
-  $group = new Group($db);
-  $result = $group->getSingle($data->groupId);
-  if (!$result || $result == null) {
-    errorHandler(
-      404,
-      'Task\'s Group Not Found',
-      new Exception('The Group with provided GroupId does not exists'));
-  }
-}
-
 // Creating instance of User to manipulate group in database
 $user = new User($db);
 
@@ -63,6 +52,17 @@ $task = new Task($db);
 
 // Getting user from database
 $authenticatedUser = $user->getSingle($decoded->username);
+
+if ($validatedData['groupId'] !== null) {
+  $group = new Group($db);
+  $result = $group->getSingle($data->groupId, $authenticatedUser['userId']);
+  if (!$result || $result == null) {
+    errorHandler(
+      404,
+      'Task\'s Group Not Found',
+      new Exception('The Group with provided GroupId does not exists'));
+  }
+}
 
 try {
   // Creating group in database
