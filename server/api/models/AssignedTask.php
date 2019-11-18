@@ -11,7 +11,7 @@ class AssignedTask {
 
   function getSingle($assignedTaskId) {
     // Creating query to get all groups of user from database
-    $query = "SELECT assignedTaskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
+    $query = "SELECT assignedTaskId AS taskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
               FROM {$this->table_name}
               WHERE assignedTaskId = :assignedTaskId;";
 
@@ -35,7 +35,7 @@ class AssignedTask {
 
   function getAll() {
     // Creating query to get all groups of user from database
-    $query = "SELECT assignedTaskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
+    $query = "SELECT assignedTaskId AS taskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
               FROM {$this->table_name};";
 
     // Preparing the query
@@ -55,7 +55,7 @@ class AssignedTask {
 
   function getAllUserTasks($userId) {
     // Creating query to get all groups of user from database
-    $query = "SELECT assignedTaskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
+    $query = "SELECT assignedTaskId AS taskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
               FROM {$this->table_name}
               WHERE userId = :userId;";
 

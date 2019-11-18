@@ -107,7 +107,7 @@ export default {
     },
   }),
   mounted() {
-    this.task.groupId = this.groupId ? this.groupId : null;
+    this.task.groupId = (this.groupId === 'null') ? this.groupId : null;
   },
   methods: {
     submitForm() {
@@ -120,7 +120,7 @@ export default {
       Task.create(formData)
         .then(() => {
           this.isLoading = false;
-          this.$emit('refresh-tasks');
+          this.$emit('refresh-page');
           const closeButton = document.getElementById('addTaskClose');
           closeButton.click();
         })

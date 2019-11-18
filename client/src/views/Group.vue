@@ -9,28 +9,34 @@
       </div>
       <div class="ml-auto text-right">
         <button type="button" class="btn btn-outline-danger"
-          data-toggle="modal" :data-target="`#deleteGroupModal${group.groupId}`">
+          data-toggle="modal" :data-target="`#deleteGroupModal${group.groupId}`"
+          v-if="!isSpecial">
             Delete Group
         </button>
         <button type="button" class="btn btn-outline-info ml-3"
-          data-toggle="modal" :data-target="`#editGroupModal${group.groupId}`">
+          data-toggle="modal" :data-target="`#editGroupModal${group.groupId}`"
+          v-if="!isSpecial">
             Edit Group
         </button>
         <button type="button" class="btn btn-success ml-3"
-          data-toggle="modal" data-target="#addTaskModal">Add Task</button>
+          data-toggle="modal" data-target="#addTaskModal"
+          v-if="groupId !== 'assignedTasks'">Add Task</button>
       </div>
     </div>
     <hr>
     <div class="row">
       <!-- <group-card v-for="task in tasks" :group="group" :key="group.groupId"></group-card> -->
-      <task-card v-for="task in tasks" :task="task" :key="task.taskId"></task-card>
+      <task-card v-for="task in tasks" :task="task" :key="task.taskId"
+        v-on:refresh-page="refreshPage"></task-card>
       <div class="col-12 mt-4" v-if="tasks.length === 0">
         <h4>No tasks found! Create tasks now!</h4>
       </div>
     </div>
-    <edit-group v-if="group" :group="group" v-on:refresh-groups="refreshGroup"></edit-group>
-    <delete-group v-if="group" :groupId="group.groupId"></delete-group>
-    <add-task v-if="group" :groupId="group.groupId" v-on:refresh-tasks="refreshTasks"></add-task>
+    <edit-group v-if="group && !isSpecial" :group="group"
+      v-on:refresh-groups="refreshGroup"></edit-group>
+    <delete-group v-if="group && !isSpecial" :groupId="group.groupId"></delete-group>
+    <add-task v-if="group" :groupId="isSpecial ? 'null' : group.groupId"
+      v-on:refresh-page="refreshPage"></add-task>
     <edit-task v-for="task in tasks" :key="`edit-${task.taskId}`" :editTask="task"
       v-on:refresh-tasks="refreshTasks"></edit-task>
     <delete-task v-for="task in tasks" :key="`delete-${task.taskId}`" :taskId="task.taskId"
@@ -41,12 +47,15 @@
 <script>
 import Group from '../lib/Group';
 import Task from '../lib/Task';
+import AssignedTasks from '../lib/AssignedTasks';
 import EditGroup from '../components/EditGroup.vue';
 import DeleteGroup from '../components/DeleteGroup.vue';
 import TaskCard from '../components/TaskCard.vue';
 import AddTask from '../components/AddTask.vue';
 import EditTask from '../components/EditTask.vue';
 import DeleteTask from '../components/DeleteTask.vue';
+import InboxImage from '../assets/img/inbox-group.jpg';
+import AssignedTasksImage from '../assets/img/assigned-tasks-group.jpg';
 
 export default {
   name: 'group',
@@ -61,6 +70,7 @@ export default {
   data: () => ({
     group: null,
     tasks: [],
+    isSpecial: false,
   }),
   computed: {
     groupId() {
@@ -68,8 +78,29 @@ export default {
     },
   },
   mounted() {
-    this.refreshGroup(this.$route.params.id);
-    this.refreshTasks(this.$route.params.id);
+    if (typeof (this.$route.params.id) === 'number') {
+      this.isSpecial = false;
+      this.refreshGroup(this.$route.params.id);
+      this.refreshTasks(this.$route.params.id);
+    } else {
+      this.isSpecial = true;
+      if (this.$route.params.id === 'inbox') {
+        this.group = {
+          groupId: 'inbox',
+          name: 'Inbox',
+          image: InboxImage,
+        };
+        this.inboxTasks();
+      }
+      if (this.$route.params.id === 'assignedTasks') {
+        this.group = {
+          groupId: 'assignedTasks',
+          name: 'Assigned Tasks',
+          image: AssignedTasksImage,
+        };
+        this.assignedTasks();
+      }
+    }
   },
   methods: {
     refreshGroup(id = null) {
@@ -85,6 +116,29 @@ export default {
         })
         .catch((err) => { console.log(err); });
     },
+    inboxTasks() {
+      Task.getAll()
+        .then((data) => {
+          this.tasks = [];
+          this.tasks = data.tasks.filter(task => task.groupId === null);
+        })
+        .catch((err) => { console.log(err); });
+    },
+    assignedTasks() {
+      AssignedTasks.getAll()
+        .then((data) => {
+          this.tasks = [];
+          const assignedTasks = data.tasks.map((task) => {
+            const assignedTask = {
+              ...task,
+              isAssignedTask: true,
+            };
+            return assignedTask;
+          });
+          this.tasks = assignedTasks;
+        })
+        .catch((err) => { console.log(err); });
+    },
     refreshTasks(id = null) {
       Task.getAllByGroup(id || this.groupId)
         .then((data) => {
@@ -92,6 +146,9 @@ export default {
           this.tasks = data.tasks;
         })
         .catch((err) => { console.log(err); });
+    },
+    refreshPage() {
+      this.$router.go();
     },
   },
 };

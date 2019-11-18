@@ -17,7 +17,7 @@
           <div v-html="taskDescription"></div>
         </li>
       </ul>
-      <div class="card-body">
+      <div class="card-body" v-if="!task.isAssignedTask">
         <button class="btn btn-sm btn-primary mr-2"
           data-toggle="modal" :data-target="`#editTaskModal${task.taskId}`">
           Edit Task
@@ -25,6 +25,12 @@
         <button class="btn btn-sm btn-danger"
           data-toggle="modal" :data-target="`#deleteTaskModal${task.taskId}`">
           Delete Task
+        </button>
+      </div>
+      <div class="card-body" v-if="task.isAssignedTask">
+        <button class="btn btn-sm btn-primary mr-2"
+          @click="completeTask(task.taskId)">
+          {{ task.status === '1' ? 'Uncomplete Task' : 'Complete Task'}}
         </button>
       </div>
       <div class="card-footer text-muted">
@@ -39,6 +45,7 @@
 
 <script>
 import HTMLDecoder from '../lib/HTMLDecoder';
+import AssignedTasks from '../lib/AssignedTasks';
 
 export default {
   name: 'group-card',
@@ -70,6 +77,16 @@ export default {
     taskDescription() {
       const decoded = HTMLDecoder(this.task.description, 'ENT_QUOTES');
       return decoded;
+    },
+  },
+  methods: {
+    completeTask(id) {
+      const formData = {
+        assignedTaskId: id,
+        status: (this.task.status === '0') ? '1' : '0',
+      };
+      AssignedTasks.complete(formData)
+        .then(() => this.$emit('refresh-page'));
     },
   },
 };

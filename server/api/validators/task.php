@@ -26,7 +26,7 @@ function validateTask($data) {
     && ((int)$urgency >= 0 || (int)$urgency <= 2);
   $isValidDescription = (gettype($description) === 'string') && (strlen(trim($description)) > 2);
   $isValidDueDate = (gettype($dueDate) === 'string');
-  $isValidGroupId = $groupId
+  $isValidGroupId = $groupId != 'null'  
     ? (is_numeric($groupId))
     : true;
 
@@ -44,7 +44,7 @@ function validateTask($data) {
     'urgency' => filter_var($urgency, FILTER_SANITIZE_NUMBER_INT),
     'description' => $description,
     'dueDate' => filter_var($dueDate, FILTER_SANITIZE_STRING),
-    'groupId' => ($groupId == null)
+    'groupId' => ($groupId == 'null')
                   ? null
                   : filter_var($data->groupId, FILTER_SANITIZE_NUMBER_INT),
   ];
