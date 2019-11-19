@@ -139,6 +139,11 @@ const routes = [
       return next();
     },
   },
+  {
+    path: '*',
+    name: '404',
+    component: () => import('../views/PageNotFound.vue'),
+  },
 ];
 
 const router = new VueRouter({

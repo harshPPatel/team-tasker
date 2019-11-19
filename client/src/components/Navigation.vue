@@ -113,7 +113,9 @@ export default {
       } else if (to.name === 'login') {
         this.showLogin = false;
         this.showSignUp = true;
-      } else if (to.name === 'dashboard' || to.name === 'admin-dashboard' || to.name === 'group') {
+      } else if (to.name === 'dashboard'
+        || to.name === 'admin-dashboard'
+        || to.name === 'group') {
         this.isLoggedIn = true;
         this.showLogin = false;
         this.showSignUp = false;
