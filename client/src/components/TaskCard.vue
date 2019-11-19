@@ -48,7 +48,7 @@ import HTMLDecoder from '../lib/HTMLDecoder';
 import AssignedTasks from '../lib/AssignedTasks';
 
 export default {
-  name: 'group-card',
+  name: 'task-card',
   props: ['task'],
   data: () => ({
     groupImage: '',

@@ -12,11 +12,40 @@ const pushToErrorPage = (error, errorCode) => {
   });
 };
 
-
 const getAll = async () => {
   let promise;
   // const API_URL = `${config.API_URL}/auth/login.php`;
   const API_URL = `${config.API_URL}/assignedTasks/index.php`;
+  // Making call to server
+  await fetch(API_URL, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: localStorage.token,
+    },
+  })
+    .then(res => res.json())
+    .then((data) => {
+      promise = new Promise((resolve, reject) => {
+        if (data.errorCode) {
+          reject(data);
+        } else {
+          resolve(data);
+        }
+      });
+    })
+    .catch((err) => {
+      pushToErrorPage(err);
+    });
+
+  return promise;
+};
+
+const getAllUsers = async () => {
+  let promise;
+  // const API_URL = `${config.API_URL}/auth/login.php`;
+  const API_URL = `${config.API_URL}/auth/users.php`;
   // Making call to server
   await fetch(API_URL, {
     method: 'POST',
@@ -105,7 +134,7 @@ const getSingle = async (id) => {
 
 const create = async (formData) => {
   let promise;
-  const API_URL = `${config.API_URL}/tasks/create.php`;
+  const API_URL = `${config.API_URL}/assignedTasks/create.php`;
   // Making call to server
   await fetch(API_URL, {
     method: 'POST',
@@ -135,7 +164,7 @@ const create = async (formData) => {
 
 const update = async (formData) => {
   let promise;
-  const API_URL = `${config.API_URL}/tasks/update.php`;
+  const API_URL = `${config.API_URL}/assignedTasks/update.php`;
   // Making call to server
   await fetch(API_URL, {
     method: 'POST',
@@ -195,7 +224,7 @@ const complete = async (formData) => {
 
 const deleteTask = async (formData) => {
   let promise;
-  const API_URL = `${config.API_URL}/tasks/delete.php`;
+  const API_URL = `${config.API_URL}/assignedTasks/delete.php`;
   // Making call to server
   await fetch(API_URL, {
     method: 'POST',
@@ -225,6 +254,7 @@ const deleteTask = async (formData) => {
 
 export default {
   getAll,
+  getAllUsers,
   getAllByGroup,
   getSingle,
   create,

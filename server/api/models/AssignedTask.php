@@ -36,7 +36,8 @@ class AssignedTask {
   function getAll() {
     // Creating query to get all groups of user from database
     $query = "SELECT assignedTaskId AS taskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
-              FROM {$this->table_name};";
+              FROM {$this->table_name}
+              ORDER BY modifiedAt DESC;";
 
     // Preparing the query
     $statement = $this->db->prepare($query);
@@ -57,7 +58,8 @@ class AssignedTask {
     // Creating query to get all groups of user from database
     $query = "SELECT assignedTaskId AS taskId, task, status, urgency, description, dueDate, userId, createdAt, modifiedAt
               FROM {$this->table_name}
-              WHERE userId = :userId;";
+              WHERE userId = :userId
+              ORDER BY modifiedAt DESC;";
 
     // Preparing the query
     $statement = $this->db->prepare($query);

@@ -59,6 +59,11 @@ $image = new Image('addGroupImage', $authenticatedUser['username']);
 try {
   $groupImage = $image->upload();
 
+  $factory = new \ImageOptimizer\OptimizerFactory();
+  $optimizer = $factory->get();
+  $filepath = $groupImage;
+  $optimizer->optimize($filepath);
+
   $imageEncoded = urlencode(filter_var($groupImage, FILTER_SANITIZE_URL));
 
   // Creating group in database

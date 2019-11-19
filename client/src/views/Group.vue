@@ -78,7 +78,7 @@ export default {
     },
   },
   mounted() {
-    if (typeof (this.$route.params.id) === 'number') {
+    if (typeof (Number(this.$route.params.id)) === 'number') {
       this.isSpecial = false;
       this.refreshGroup(this.$route.params.id);
       this.refreshTasks(this.$route.params.id);

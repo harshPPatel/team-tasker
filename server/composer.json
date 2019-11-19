@@ -1,6 +1,7 @@
 {
     "require": {
         "vlucas/phpdotenv": "^3.6",
-        "firebase/php-jwt": "^5.0"
+        "firebase/php-jwt": "^5.0",
+        "ps/image-optimizer": "^2.0"
     }
 }

@@ -83,6 +83,8 @@ export default {
     logoutUser() {
       localStorage.removeItem('username');
       localStorage.removeItem('token');
+      localStorage.removeItem('authSuccess');
+      localStorage.removeItem('authError');
       this.isLoggedIn = false;
       this.showLogin = true;
       this.showSignUp = true;
@@ -111,7 +113,7 @@ export default {
       } else if (to.name === 'login') {
         this.showLogin = false;
         this.showSignUp = true;
-      } else if (to.name === 'dashboard') {
+      } else if (to.name === 'dashboard' || to.name === 'admin-dashboard' || to.name === 'group') {
         this.isLoggedIn = true;
         this.showLogin = false;
         this.showSignUp = false;

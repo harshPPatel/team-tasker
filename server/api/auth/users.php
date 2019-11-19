@@ -22,14 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // requiring all important files
 require_once('../../index.php');
 require_once('../models/User.php');
-require_once('../models/AssignedTask.php');
 require_once('../validators/token.php');
-require_once('../validators/assignedTask.php');
 
 // Thorwing error if Request Method is other than POST
 if ($_SERVER['REQUEST_METHOD'] != 'POST')
 {
-  errorHandler(400, 'Bad Request', new Exception('Bad Request'));
+  errorHandler(400, 'Bad Request', new Exception('Request is not post request'));
 }
 
 $decoded = verifyToken();
@@ -37,28 +35,12 @@ $decoded = verifyToken();
 // Decoding json data returned from request
 $data = json_decode(file_get_contents("php://input"));
 
-// Verifying the data
-if (!$data || !property_exists($data, 'assignedTaskId')) {
-  errorHandler(422,
-    'Unsuffecient Data provided',
-    new Exception('Assigned Task ID does not exists on the database'));
-}
-
-if (!is_numeric($data->assignedTaskId)) {
-  errorHandler(422,
-    'Invalid Data',
-    new Exception('Assigned Task ID is not a valid type'));
-}
-
-$assignedTaskId = filter_var($data->assignedTaskId, FILTER_SANITIZE_NUMBER_INT);
-
 // Establishing the connection to the database
 $db = $database->getConnection();
 
 // Creating instance of User to manipulate group in database
 $user = new User($db);
 
-// Getting user from database
 $authenticatedUser = $user->getSingle($decoded->username);
 
 if ($authenticatedUser['role'] != 1) {
@@ -67,38 +49,30 @@ if ($authenticatedUser['role'] != 1) {
     new Exception('User is not a valid admin of the website'));
 }
 
-// Creating instance of Group to manipulate group in database
-$assignedTask = new AssignedTask($db);
+$result = $user->getAll();
 
-$tempResult = $assignedTask->getSingle($assignedTaskId);
-
-if (!$tempResult || $tempResult == null) {
-  errorHandler(
-    404,
-    'Assigned Task Not Found',
-    new Exception('Assigend Task does not exists on the database'));
-}
-
-try {
-  // Creating group in database
-  $result = $assignedTask->delete($tempResult['taskId']);
-
+// If user does exists than validating user
+if ($result != null) {
   // Preparing return message
   $message = [
-    'username' => $authenticatedUser['username'],
-    'task' => $result,
-    'created_at' => date("Y-m-d H:i:s"),
+    'username' => $decoded->username,
+    'users' => $result,
+    'total' => count($result),
   ];
 
   // Returning message in json format
   echo json_encode($message);
+} else {
+  // Preparing return message
+  $message = [
+    'username' => $decoded->username,
+    'users' => [],
+    'count' => 0,
+    'message' => 'No Users found',
+  ];
 
-} catch (Exception $e) {
-  errorHandler(
-    null,
-    'Error while creating the task',
-    $e
-  );
+  // Returning message in json format
+  echo json_encode($message);
 }
 
 ?>

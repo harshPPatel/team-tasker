@@ -46,14 +46,14 @@ function validateAssignedTask($data) {
 
 function validateUpdateAssignedTask($data) {
   validateAssignedTask($data);
-  if (!property_exists($data, 'assignedTaskId')) {
+  if (!property_exists($data, 'taskId')) {
     errorHandler(
       405,
       'Insuffecient data is supplied',
       new Exception('All data is not provided')
     );
   }
-  if (!is_numeric($data->assignedTaskId)) {
+  if (!is_numeric($data->taskId)) {
     errorHandler(
       422,
       'Invalid Data provided',
@@ -62,7 +62,7 @@ function validateUpdateAssignedTask($data) {
   }
 
   return [
-    'assignedTaskId' => filter_var($data->assignedTaskId, FILTER_SANITIZE_NUMBER_INT),
+    'assignedTaskId' => filter_var($data->taskId, FILTER_SANITIZE_NUMBER_INT),
     'task' => filter_var($data->task, FILTER_SANITIZE_STRING),
     'status' => filter_var($data->status, FILTER_SANITIZE_NUMBER_INT),
     'urgency' => filter_var($data->urgency, FILTER_SANITIZE_NUMBER_INT),

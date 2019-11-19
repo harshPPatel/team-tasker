@@ -62,6 +62,13 @@ const routes = [
             }
           })
           .catch(() => next('/login'));
+      } else {
+        localStorage.removeItem('authSuccess');
+        localStorage.authError = JSON.stringify({
+          errorCode: '401',
+          message: 'Please login to access your data',
+        });
+        next('/login');
       }
       return next();
     },

@@ -47,7 +47,7 @@ $assignedTask = new AssignedTask($db);
 
 $authenticatedUser = $user->getSingle($decoded->username);
 
-if ($authenticatedUser['role'] === 1) {
+if ($authenticatedUser['username'] === 'admin') {
   $result = $assignedTask->getAll();
 } else {
   $result = $assignedTask->getAllUserTasks($authenticatedUser['userId']);

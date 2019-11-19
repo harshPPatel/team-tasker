@@ -123,8 +123,9 @@ class User {
    */
   function getAll() {
     // Creating query
-    $query = "SELECT username, role, createdAt, modifiedAt
-              FROM {$this->table_name};";
+    $query = "SELECT userId, username, role, createdAt, modifiedAt
+              FROM {$this->table_name}
+              WHERE role = 0;";
     // Preapring the query
     $statement = $this->db->prepare($query);
 

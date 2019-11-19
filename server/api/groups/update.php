@@ -71,6 +71,12 @@ if ($groupResult['userId'] !== $authenticatedUser['userId']) {
 try {
   if (isset($_FILES['image'])) {
     $groupImage = $image->upload();
+    
+    $factory = new \ImageOptimizer\OptimizerFactory();
+    $optimizer = $factory->get();
+    $filepath = $groupImage;
+    $optimizer->optimize($filepath);
+    
     $imageEncoded = urlencode(filter_var($groupImage, FILTER_SANITIZE_URL));
     $image->remove(urldecode($groupResult['image']));
   } else {
