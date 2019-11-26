@@ -45,6 +45,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import Group from '../lib/Group';
 import Task from '../lib/Task';
 import AssignedTasks from '../lib/AssignedTasks';

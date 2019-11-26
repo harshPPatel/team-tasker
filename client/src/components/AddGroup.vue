@@ -61,6 +61,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import ErrorComponent from './ErrorComponent.vue';
 import Group from '../lib/Group';
 

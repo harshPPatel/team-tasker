@@ -33,6 +33,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import Group from '../lib/Group';
 import GroupCard from '../components/GroupCard.vue';
 import AddGroup from '../components/AddGroup.vue';
