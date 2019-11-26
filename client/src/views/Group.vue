@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="groupImage" v-if="group">
-      <img :src="group.image" :alt="group.name">
+      <img :src="`https://team-tasker-api.000webhostapp.com/uploads/${group.image}`" :alt="group.name">
     </div>
     <div class="flex-container mt-4" v-if="group">
       <div class="">

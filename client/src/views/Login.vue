@@ -86,7 +86,7 @@ export default {
           this.$router.push({ name: 'dashboard' });
         })
         .catch((err) => {
-          this.errors.server = err;
+          this.authError = err;
           this.isLoading = false;
         });
     },

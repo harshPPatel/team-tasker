@@ -3,7 +3,8 @@
     <div class="card mb-3">
       <h3 class="card-header">{{ group.name }}</h3>
       <img style="height: 200px; width: 100%; display: block;"
-        :src="groupImage" :alt="`${ group.name }'s Image`">
+        :src="group.image"
+        :alt="`${ group.name }'s Image`">
       <ul class="list-group list-group-flush">
         <li class="list-group-item" v-if="!groupUser">
           <b>Group's Owner : </b> {{ username }}

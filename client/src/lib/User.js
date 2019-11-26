@@ -29,11 +29,12 @@ const login = async (user) => {
     .then(res => res.json())
     .then((data) => {
       promise = new Promise((resolve, reject) => {
-        if (data.username) {
+        if (data.errorCode) {
+          console.log('Here');
+          reject(data);
+        } else {
           localStorage.token = data.token;
           resolve(data);
-        } else {
-          reject(data);
         }
       });
     })

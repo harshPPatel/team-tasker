@@ -68,6 +68,11 @@ export default {
   mounted() {
     Group.getAll()
       .then((data) => {
+        /* eslint-disable no-param-reassign */
+        data.groups.forEach((group) => {
+          group.image = `https://team-tasker-api.000webhostapp.com/uploads/${group.image}`;
+        });
+        /* eslint-enable no-param-reassign */
         this.groups = data.groups;
       })
       .catch((err) => {
@@ -76,14 +81,19 @@ export default {
   },
   methods: {
     refreshGroups() {
+      let userGroups = [];
       Group.getAll()
         .then((data) => {
           this.groups = null;
-          this.groups = data.groups;
+          userGroups = data.groups;
         })
         .catch((err) => {
           console.log(err);
         });
+      this.groups = userGroups.map(group => ({
+        ...group,
+        image: `https://team-tasker-api.000webhostapp.com/uploads/${group.image}`,
+      }));
     },
   },
 };
