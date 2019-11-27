@@ -1,7 +1,8 @@
 <template>
   <div class="container mt-5">
     <div class="groupImage" v-if="group">
-      <img :src="`https://team-tasker-api.000webhostapp.com/uploads/${group.image}`" :alt="group.name">
+      <img v-if="!isSpecial" :src="`https://team-tasker-api.000webhostapp.com/uploads/${group.image}`" :alt="group.name">
+      <img v-if="isSpecial" :src="group.image" :alt="group.name">
     </div>
     <div class="flex-container mt-4" v-if="group">
       <div class="">
@@ -79,7 +80,9 @@ export default {
     },
   },
   mounted() {
-    if (typeof (Number(this.$route.params.id)) === 'number') {
+    /* eslint-disable */
+    console.log(isNaN(this.$route.params.id));
+    if (!isNaN(this.$route.params.id)) {
       this.isSpecial = false;
       this.refreshGroup(this.$route.params.id);
       this.refreshTasks(this.$route.params.id);
@@ -129,14 +132,20 @@ export default {
       AssignedTasks.getAll()
         .then((data) => {
           this.tasks = [];
-          const assignedTasks = data.tasks.map((task) => {
-            const assignedTask = {
-              ...task,
-              isAssignedTask: true,
-            };
-            return assignedTask;
+          // const assignedTasks = data.tasks.map((task) => {
+          //   const assignedTask = {
+          //     ...task,
+          //     isAssignedTask: true,
+          //   };
+          //   return assignedTask;
+          // });
+          /* eslint-disable */
+          data.tasks.forEach((task) => {
+            task.isAssignedTask = true;
           });
-          this.tasks = assignedTasks;
+          console.log(data.tasks);
+          /* eslint-rnable */
+          this.tasks = data.tasks;
         })
         .catch((err) => { console.log(err); });
     },
