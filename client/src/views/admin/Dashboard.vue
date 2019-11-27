@@ -11,7 +11,8 @@
       </div>
     </div>
     <hr>
-    <add-assigned-task :users="users"></add-assigned-task>
+    <add-assigned-task :users="users" v-on:refresh-page="refreshPage">
+    </add-assigned-task>
     <div class="row">
       <task-card v-for="task in tasks" :task="task" :key="`task-${task.taskId}`"></task-card>
     </div>
