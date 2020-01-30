@@ -1,3 +1,0 @@
-# This file prevents users direct access to the utilities files
-
-deny from all
