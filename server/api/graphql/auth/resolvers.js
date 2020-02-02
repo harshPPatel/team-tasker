@@ -68,7 +68,7 @@ const logout = (_, args) => (
           loggedOutAt: Date.now(),
         }))
         .catch((err) => new ValidationError(err.message));
-      // returning the response
+      // Returning the response
       return response;
     })
     .catch((err) => new ValidationError(err.message))
