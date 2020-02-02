@@ -15,6 +15,15 @@ const typeDefs = `
     token: String
   }
 
+  type LogoutResponse {
+    "User's Username"
+    username: String
+    "Message for logout"
+    message: String
+    "Time when user logged out"
+    loggedOutAt: String
+  }
+
   input SignUpInput {
     "User's username"
     username: String
@@ -33,8 +42,9 @@ const typeDefs = `
 `;
 
 const mutations = `
-  signup(input: SignUpInput): User!,
-  login(input: LoginInput): AuthResponse!,
+  signup(input: SignUpInput): User!
+  login(input: LoginInput): AuthResponse!
+  logout(token: String!): LogoutResponse!
 `;
 
 module.exports = {

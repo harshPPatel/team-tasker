@@ -14,7 +14,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   formatError: (err) => {
-    console.log('hello', err);
     if (err.originalError instanceof ApolloError) {
       return err;
     }

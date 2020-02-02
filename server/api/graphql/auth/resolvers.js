@@ -1,9 +1,10 @@
 const { hash, compare } = require('bcryptjs');
-const { ApolloError } = require('apollo-server-express');
+const { ApolloError, ValidationError } = require('apollo-server-express');
 
 const AuthValidator = require('../../validators/auth');
 const User = require('../../models/User');
 const Token = require('../../helpers/Token');
+const BlacklistToken = require('../../models/BlacklistToken');
 
 const signup = (_, args) => (
   AuthValidator.signup(args.input)
@@ -51,7 +52,30 @@ const login = (_, args) => (
     .catch((err) => err)
 );
 
+const logout = (_, args) => (
+  // Validating the token
+  Token.validate(args.token)
+    .then(async (decoded) => {
+      // Blacklsiting the token
+      const blacklistToken = new BlacklistToken({
+        token: args.token,
+      });
+      // Saving the token to BlacklistToken
+      const response = await blacklistToken.save()
+        .then(() => ({
+          username: decoded.username,
+          message: 'User has been logged out successfully.',
+          loggedOutAt: Date.now(),
+        }))
+        .catch((err) => new ValidationError(err.message));
+      // Returning the response
+      return response;
+    })
+    .catch((err) => new ValidationError(err.message))
+);
+
 module.exports = {
   login,
   signup,
+  logout,
 };

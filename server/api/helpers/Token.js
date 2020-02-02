@@ -1,4 +1,5 @@
-const { sign } = require('jsonwebtoken');
+const { sign, verify } = require('jsonwebtoken');
+const BlacklistToken = require('../models/BlacklistToken');
 
 class Token {
   constructor(user) {
@@ -24,6 +25,33 @@ class Token {
       this.options,
     );
     return token;
+  }
+
+  static async validate(token) {
+    // options for JWT
+    const options = {
+      algorithm: 'HS256',
+      expiresIn: '2 days',
+    };
+    // Returning the promise
+    return new Promise((resolve, reject) => {
+      // verifying the token
+      verify(token, process.env.JWT_KEY, options, async (err, decoded) => {
+        // Rejecting the promise with error
+        if (err) {
+          reject(new Error('Token is Invalid!'));
+        }
+        // Checking the token in BlacklistToken
+        const blackListToken = await BlacklistToken
+          .findOne({ token }).exec();
+        // Rejecting with error if token is blacklisted
+        if (blackListToken) {
+          reject(new Error('Token is Invalid!'));
+        }
+        // Resolving the promise with the decoded data
+        resolve(decoded);
+      });
+    });
   }
 }
 
