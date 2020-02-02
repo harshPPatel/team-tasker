@@ -145,3 +145,6 @@ backup/
 
 # v1 folder for old php code
 api-v1/
+
+# git config file (used for different computer)
+.gitconfig
