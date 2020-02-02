@@ -24,6 +24,13 @@ const typeDefs = `
     loggedOutAt: String
   }
 
+  type TokenVerifyResponse {
+    "User's Username"
+    username: String
+    "Message for logout"
+    message: String
+  }
+
   input SignUpInput {
     "User's username"
     username: String
@@ -45,6 +52,7 @@ const mutations = `
   signup(input: SignUpInput): User!
   login(input: LoginInput): AuthResponse!
   logout(token: String!): LogoutResponse!
+  verify(token: String!): TokenVerifyResponse!
 `;
 
 module.exports = {

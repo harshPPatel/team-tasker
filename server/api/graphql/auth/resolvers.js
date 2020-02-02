@@ -1,5 +1,5 @@
 const { hash, compare } = require('bcryptjs');
-const { ApolloError, ValidationError } = require('apollo-server-express');
+const { ApolloError, ValidationError, AuthenticationError } = require('apollo-server-express');
 
 const AuthValidator = require('../../validators/auth');
 const User = require('../../models/User');
@@ -74,8 +74,18 @@ const logout = (_, args) => (
     .catch((err) => new ValidationError(err.message))
 );
 
+const verify = (_, args) => (
+  Token.validate(args.token)
+    .then((decoded) => ({
+      username: decoded.username,
+      message: 'Token is Valid!',
+    }))
+    .catch(() => new AuthenticationError('Token is Invalid!'))
+);
+
 module.exports = {
   login,
   signup,
   logout,
+  verify,
 };
