@@ -1,11 +1,17 @@
 const typeDefs = `
   type User {
+    "User's Username"
     username: String
+    "User's theme choice"
     theme: Int
-    lastPasswordChangedAt: String
-    createdAt: String
-    updatedAt: String
+    "True if user is admin"
     isAdmin: Boolean
+    "Timestamp when user changed the password for last time"
+    lastPasswordChangedAt: String
+    "Time when user is created"
+    createdAt: String
+    "Time when last time user is updated"
+    updatedAt: String
   }
 
   type AuthResponse {
@@ -51,7 +57,7 @@ const typeDefs = `
 const mutations = `
   signup(input: SignUpInput): User!
   login(input: LoginInput): AuthResponse!
-  logout(token: String!): LogoutResponse!
+  logout: LogoutResponse!
   verify(token: String!): TokenVerifyResponse!
 `;
 

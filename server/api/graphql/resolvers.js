@@ -1,11 +1,13 @@
 const { resolvers: AuthResolvers } = require('./auth');
+const { resolvers: GroupResolvers } = require('./group');
 
 const resolvers = {
   Query: {
-    test: () => 'test',
+    ...GroupResolvers.queries,
   },
   Mutation: {
     ...AuthResolvers,
+    ...GroupResolvers.mutations,
   },
 };
 

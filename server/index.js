@@ -1,11 +1,12 @@
 const express = require('express');
 const { GraphQLError } = require('graphql');
-const { ApolloServer, ApolloError } = require('apollo-server-express');
+const { ApolloServer, ApolloError, ValidationError } = require('apollo-server-express');
 const { v4 } = require('uuid');
 
 const db = require('./db');
 const typeDefs = require('./api/graphql/schema');
 const resolvers = require('./api/graphql/resolvers');
+const Token = require('./api/helpers/Token');
 
 require('dotenv').config();
 
@@ -25,6 +26,20 @@ const server = new ApolloServer({
 
     // Returing the GraphQLError
     return new GraphQLError(`Internal Error: ${errorId}`);
+  },
+  context: ({ req }) => {
+    const token = req.headers.authorization;
+    console.log(token, '< token');
+    if (!token) {
+      return { isValidToken: false };
+    }
+    return Token.validate(token)
+      .then((decoded) => ({
+        isValidToken: true,
+        token,
+        decoded,
+      }))
+      .catch((err) => new ValidationError(err.message));
   },
 });
 
