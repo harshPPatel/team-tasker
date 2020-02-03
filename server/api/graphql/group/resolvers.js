@@ -1,7 +1,10 @@
-const groups = (_, args) => {
-  return [];
-};
+// const groups = () => {
+//   return [];
+// };
 
-module.exports = {
-  queries: { groups },
-};
+// const createGroup = (_)
+
+// module.exports = {
+//   queries: { groups },
+//   mutations: { createGroup },
+// };

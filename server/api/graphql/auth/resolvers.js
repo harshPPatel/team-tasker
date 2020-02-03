@@ -53,23 +53,24 @@ const login = (_, args) => (
 );
 
 const logout = async (_, args, context) => {
-  if (!context.isValidToken) {
-    return new ValidationError('Valid Token is required.');
-  }
-  // Blacklsiting the token
-  const blacklistToken = new BlacklistToken({
-    token: context.token,
-  });
-  // Saving the token to BlacklistToken
-  const response = await blacklistToken.save()
-    .then(() => ({
-      username: context.decoded.username,
-      message: 'User has been logged out successfully.',
-      loggedOutAt: Date.now(),
-    }))
-    .catch((err) => new ValidationError(err.message));
-  // Returning the response
-  return response;
+  console.log(context);
+  // // if (!context.isValidToken) {
+  // //   return new ValidationError('Valid Token is required.');
+  // // }
+  // // // Blacklsiting the token
+  // // const blacklistToken = new BlacklistToken({
+  // //   token: context.token,
+  // // });
+  // // // Saving the token to BlacklistToken
+  // // const response = await blacklistToken.save()
+  // //   .then(() => ({
+  // //     username: context.decoded.username,
+  // //     message: 'User has been logged out successfully.',
+  // //     loggedOutAt: Date.now(),
+  // //   }))
+  // //   .catch((err) => new ValidationError(err.message));
+  // // Returning the response
+  // return response;
 };
 
 const verify = (_, args) => (
