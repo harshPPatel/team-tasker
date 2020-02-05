@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server-express');
 
-const Auth = require('./auth');
-const Group = require('./group');
+const Auth = require('./auth/auth.index');
+const Group = require('./group/group.index');
 
 const typeDefs = gql`
   ${Auth.schema.typeDefs}

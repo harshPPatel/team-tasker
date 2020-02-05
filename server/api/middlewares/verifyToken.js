@@ -30,7 +30,6 @@ const validateToken = async (req, res, next) => {
 
   // verifying token
   verify(token, PRIVATE_KEY, options, async (err, decoded) => {
-    console.log(err);
     if (err) {
       req.isValidToken = false;
       req.error = 'Token is Invalid!';

@@ -47,7 +47,6 @@ const server = new ApolloServer({
     username: req.username,
     token: req.token,
   }),
-  // context: ({ req }) => console.log(req.body),
 });
 
 // Adding graphql server as middleware to express app

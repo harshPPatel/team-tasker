@@ -8,10 +8,13 @@ const typeDefs = `
     description: String
     "Image URL related to the group:"
     imageURL: String
+    "Username to whom the group belongs to"
+    username: String
     "Time when group is created"
     createdAt: String
     "Time when last time group is updated"
     updatedAt: String
+    
   }
 `;
 

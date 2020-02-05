@@ -1,5 +1,5 @@
-const { resolvers: AuthResolvers } = require('./auth');
-const { resolvers: GroupResolvers } = require('./group');
+const { resolvers: AuthResolvers } = require('./auth/auth.index');
+const { resolvers: GroupResolvers } = require('./group/group.index');
 
 const resolvers = {
   Query: {
