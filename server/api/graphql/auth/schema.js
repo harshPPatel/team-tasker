@@ -58,7 +58,7 @@ const mutations = `
   signup(input: SignUpInput): User!
   login(input: LoginInput): AuthResponse!
   logout: LogoutResponse!
-  verify(token: String!): TokenVerifyResponse!
+  verify: TokenVerifyResponse!
 `;
 
 module.exports = {

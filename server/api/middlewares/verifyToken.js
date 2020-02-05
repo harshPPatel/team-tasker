@@ -28,10 +28,15 @@ const validateToken = async (req, res, next) => {
   // Getting token from request
   const token = req.headers.authorization.split(' ')[1];
 
-  try {
-    // verifying token
-    const decoded = await verify(token, PRIVATE_KEY, options);
-
+  // verifying token
+  verify(token, PRIVATE_KEY, options, async (err, decoded) => {
+    console.log(err);
+    if (err) {
+      req.isValidToken = false;
+      req.error = 'Token is Invalid!';
+      next();
+      return;
+    }
     // Checking if token is not blacklisted
     const blackListToken = await BlacklistToken.findOne({ token }).exec();
     if (blackListToken) {
@@ -44,12 +49,9 @@ const validateToken = async (req, res, next) => {
     // adding data to request object
     req.username = decoded.username;
     req.isValidToken = true;
-  } catch (err) {
-    req.isValidToken = false;
-    req.error = 'Token is Invalid!';
-  } finally {
+    req.token = token;
     next();
-  }
+  });
 };
 
 module.exports = validateToken;

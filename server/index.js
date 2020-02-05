@@ -1,21 +1,19 @@
+require('dotenv').config();
+
 const express = require('express');
 const { GraphQLError } = require('graphql');
-const { ApolloServer, ApolloError, ValidationError } = require('apollo-server-express');
+const { ApolloServer, ApolloError } = require('apollo-server-express');
 const { v4 } = require('uuid');
 
 const db = require('./db');
 const verifyToken = require('./api/middlewares/verifyToken');
 const typeDefs = require('./api/graphql/schema');
 const resolvers = require('./api/graphql/resolvers');
-const Token = require('./api/helpers/Token');
-
-require('dotenv').config();
 
 // Creating express app
 const app = express();
 
 app.use(express.json());
-app.use(verifyToken);
 
 // Root Route
 app.get('/', (req, res) => {
@@ -23,6 +21,8 @@ app.get('/', (req, res) => {
     message: 'Welcome to the Team Tasker App\'s API!',
   });
 });
+
+app.use(verifyToken);
 
 // Creating Apollo Server
 const server = new ApolloServer({
@@ -45,7 +45,9 @@ const server = new ApolloServer({
     isValidToken: req.isValidToken,
     error: req.error,
     username: req.username,
+    token: req.token,
   }),
+  // context: ({ req }) => console.log(req.body),
 });
 
 // Adding graphql server as middleware to express app

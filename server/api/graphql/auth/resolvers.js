@@ -53,34 +53,38 @@ const login = (_, args) => (
 );
 
 const logout = async (_, args, context) => {
-  console.log(context);
-  // // if (!context.isValidToken) {
-  // //   return new ValidationError('Valid Token is required.');
-  // // }
-  // // // Blacklsiting the token
-  // // const blacklistToken = new BlacklistToken({
-  // //   token: context.token,
-  // // });
-  // // // Saving the token to BlacklistToken
-  // // const response = await blacklistToken.save()
-  // //   .then(() => ({
-  // //     username: context.decoded.username,
-  // //     message: 'User has been logged out successfully.',
-  // //     loggedOutAt: Date.now(),
-  // //   }))
-  // //   .catch((err) => new ValidationError(err.message));
-  // // Returning the response
-  // return response;
+  // Throwing the error if token is not valid
+  if (!context.isValidToken) {
+    return new AuthenticationError('Token is invalid!');
+  }
+  // Blacklsiting the token
+  const blacklistToken = new BlacklistToken({
+    token: context.token,
+  });
+  // Saving the token to BlacklistToken
+  const response = await blacklistToken.save()
+    .then(() => ({
+      username: context.username,
+      message: 'User has been logged out successfully.',
+      loggedOutAt: Date.now(),
+    }))
+    .catch((err) => new ValidationError(err.message));
+  // Returning the response
+  return response;
 };
 
-const verify = (_, args) => (
-  Token.validate(args.token)
-    .then((decoded) => ({
-      username: decoded.username,
-      message: 'Token is Valid!',
-    }))
-    .catch(() => new AuthenticationError('Token is Invalid!'))
-);
+const verify = (_, args, context) => {
+  console.log(context);
+  // Throwing the error if token is not valid
+  if (!context.isValidToken) {
+    return new AuthenticationError('Token is required');
+  }
+  // Otherwise returning the response
+  return {
+    username: context.username,
+    message: 'Token is Valid!',
+  };
+};
 
 module.exports = {
   login,
