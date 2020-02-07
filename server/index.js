@@ -46,6 +46,7 @@ const server = new ApolloServer({
     error: req.error,
     username: req.username,
     token: req.token,
+    user: req.user,
   }),
 });
 
