@@ -14,6 +14,8 @@ const typeDefs = `
     createdAt: String
     "Time when last time group is updated"
     updatedAt: String
+    "Tasks belongs to the requested group"
+    tasks: [Task]
   }
 
   input CreateGroupInput {
@@ -48,11 +50,13 @@ const typeDefs = `
 
 const queries = `
   groups: [Group!]!
+  group(id: String!): Group!
 `;
 
 const mutations = `
   createGroup(group: CreateGroupInput): GroupResponse!
   editGroup(group: EditGroupInput): GroupResponse!
+  deleteGroup(id: String!): GroupResponse!
 `;
 
 module.exports = {
