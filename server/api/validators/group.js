@@ -42,6 +42,36 @@ const create = (payload) => (
   })
 );
 
+/**
+ * Validates the provided payload for edit group
+ * @param {Object} payload Payload provided by user
+ * @returns {Promise} Promise gets solved if the data is valid,
+ * otherwise it get rejected with the ApolloError
+ */
+const edit = (payload) => (
+  new Promise((resolve, reject) => {
+    const groupSchema = joi.object({
+      ...commonSchema,
+      id: joi.string()
+        .trim()
+        .pattern(/^[0-9a-fA-F]{24}$/, { name: 'Group ID' })
+        .required(),
+    });
+
+    // Validating the input
+    const result = groupSchema.validate(payload);
+
+    if (result.error) {
+      reject(new ApolloError(result.error));
+      return;
+    }
+
+    // resolving the error with validated data
+    resolve(result);
+  })
+);
+
 module.exports = {
   create,
+  edit,
 };

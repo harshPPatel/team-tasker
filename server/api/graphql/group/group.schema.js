@@ -25,6 +25,17 @@ const typeDefs = `
     imageUrl: String
   }
 
+  input EditGroupInput {
+    "ID of the group which values are updating"
+    id: ID!
+    "Name of Group"
+    name: String!
+    "Description for the group"
+    description: String
+    "Image URL for the group"
+    imageUrl: String
+  }
+
   type GroupResponse {
     "Created or Edited Group"
     group: Group
@@ -41,6 +52,7 @@ const queries = `
 
 const mutations = `
   createGroup(group: CreateGroupInput): GroupResponse!
+  editGroup(group: EditGroupInput): GroupResponse!
 `;
 
 module.exports = {
