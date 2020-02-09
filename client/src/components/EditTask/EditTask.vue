@@ -1,5 +1,7 @@
 <template src="./EditTask.html"></template>
 
+<style lang="scss" src="./EditTask.scss"></style>
+
 <script>
 import Task from '../../lib/Task';
 import ErrorComponent from '../ErrorComponent.vue';
@@ -65,13 +67,3 @@ export default {
   },
 };
 </script>
-
-<style>
-
-.taskStatus {
-  /* align-items: flex-start; */
-  justify-content: center;
-  width: initial;
-}
-
-</style>

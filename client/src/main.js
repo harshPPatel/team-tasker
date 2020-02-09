@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import wysiwyg from 'vue-wysiwyg';
 import { Datetime } from 'vue-datetime';
+
 import App from './App.vue';
 import router from './router';
 
