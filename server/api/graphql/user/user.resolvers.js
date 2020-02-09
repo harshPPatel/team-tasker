@@ -46,7 +46,28 @@ const changeTheme = async (obj, args, context) => {
     .catch((err) => new ApolloError(err));
 };
 
+const deleteAccount = async (_, args, context) => {
+  if (!context.isValidToken) {
+    return new ValidationError('Token is Invalid');
+  }
+
+  const user = await User.findOne({ username: context.username }).exec();
+
+  if (!user) {
+    return new ApolloError('User does not exists');
+  }
+
+  return user.remove()
+    .then(() => ({
+      user,
+      username: user.username,
+      message: 'User account deleted successfully!',
+    }))
+    .catch((err) => new ApolloError(err));
+};
+
 module.exports = {
   users,
   changeTheme,
+  deleteAccount,
 };

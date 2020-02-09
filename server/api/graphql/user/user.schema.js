@@ -7,6 +7,7 @@ const queries = `
 
 const mutations = `
   changeTheme(theme: Number!): AuthResponse!
+  deleteAccount: AuthResponse!
 `;
 
 module.exports = {
