@@ -55,8 +55,8 @@ const typeDefs = `
 `;
 
 const mutations = `
-  signup(input: SignUpInput): User!
-  login(input: LoginInput): AuthResponse!
+  signup(input: SignUpInput!): User!
+  login(input: LoginInput!): AuthResponse!
   logout: LogoutResponse!
   verify: TokenVerifyResponse!
 `;
