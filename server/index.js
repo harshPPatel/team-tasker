@@ -10,6 +10,8 @@ const verifyToken = require('./api/middlewares/verifyToken');
 const typeDefs = require('./api/graphql/schema');
 const resolvers = require('./api/graphql/resolvers');
 
+const PORT = process.env.PORT || 5000;
+
 // Creating express app
 const app = express();
 
@@ -57,7 +59,7 @@ server.applyMiddleware({ app });
 db.getConnection();
 
 // Starting express app
-app.listen({ port: 4000 }, () => {
+app.listen({ port: PORT }, () => {
   // eslint-disable-next-line
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
 });
