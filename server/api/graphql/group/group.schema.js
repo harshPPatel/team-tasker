@@ -54,9 +54,9 @@ const queries = `
 `;
 
 const mutations = `
-  createGroup(group: CreateGroupInput): GroupResponse!
-  editGroup(group: EditGroupInput): GroupResponse!
-  deleteGroup(id: String!): GroupResponse!
+  createGroup(group: CreateGroupInput!): GroupResponse!
+  editGroup(group: EditGroupInput!): GroupResponse!
+  deleteGroup(id: ID!): GroupResponse!
 `;
 
 module.exports = {

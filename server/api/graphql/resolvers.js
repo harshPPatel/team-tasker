@@ -9,6 +9,7 @@ const resolvers = {
   Mutation: {
     ...AuthResolvers,
     ...GroupResolvers.mutations,
+    ...TaskResolvers.mutations,
   },
 };
 

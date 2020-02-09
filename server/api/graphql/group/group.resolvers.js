@@ -134,7 +134,7 @@ const deleteGroup = async (_, args, context) => {
   }
 
   // Finding group in database
-  const group = await Group.find({ _id: groupId }).exec();
+  const group = await Group.findOne({ _id: groupId }).exec();
 
   // Returning the error if group does not exists
   if (!group) {
