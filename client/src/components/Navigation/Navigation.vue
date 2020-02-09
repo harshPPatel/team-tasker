@@ -9,6 +9,7 @@ export default {
     isLoggedIn: false,
     showLogin: true,
     showSignUp: true,
+    drawer: false,
   }),
   methods: {
     async verifyToken() {

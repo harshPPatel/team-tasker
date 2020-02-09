@@ -4,6 +4,7 @@ import { Datetime } from 'vue-datetime';
 
 import App from './App.vue';
 import router from './router';
+import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 Vue.use(wysiwyg, {
@@ -23,5 +24,6 @@ Vue.component('datetime', Datetime);
 
 new Vue({
   router,
+  vuetify,
   render: h => h(App),
 }).$mount('#app');

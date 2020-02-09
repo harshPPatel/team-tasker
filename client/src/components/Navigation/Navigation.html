@@ -1,3 +1,71 @@
+<v-card class="mx-auto overflow-hidden" height="400">
+  <v-app-bar color="deep-purple" dark>
+    <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+    <v-toolbar-title>Team Tasker</v-toolbar-title>
+  </v-app-bar>
+  <!-- Navigation Drawer (Left) -->
+  <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-list nav dense>
+      <v-list-item-group
+        v-model="group"
+        active-class="deep-purple--text text--accent-4"
+      >
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Dashboard</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Account</v-list-item-title>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn block>Logout</v-btn>
+      </div>
+    </template>
+  </v-navigation-drawer>
+</v-card>
+<div>
+  <v-app-bar
+    color="deep-dark accent-4"
+    dense
+    dark
+  >
+    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+    <v-toolbar-title>Team Tasker</v-toolbar-title>
+
+    <v-spacer></v-spacer>
+
+    <v-menu
+      left
+      bottom
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn icon v-on="on">
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item
+          v-for="n in 5"
+          :key="n"
+          @click="() => {}"
+        >
+          <v-list-item-title>Option {{ n }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </v-app-bar>
+</div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
     <router-link to="/" class="navbar-brand">Team Tasker</router-link>
