@@ -6,8 +6,8 @@
 * [x] Home
 * [x] About
 * [x] Contact
-* [ ] Login
 * [ ] SignUp
+* [ ] Login
 * [ ] Dashboard
 * [ ] Group
 * [ ] Admin Dashboard
@@ -25,6 +25,7 @@
 * Add
 * [ ] User settings page (Theme Change, delete Account)
 * [ ] Delete Confirmation PAGE
+* [ ] Use snackbars for success messages (CRUD functions!)
 
 * STRETCH
 * [ ] Password Change Mutation on server

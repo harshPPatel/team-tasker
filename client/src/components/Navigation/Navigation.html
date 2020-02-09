@@ -1,5 +1,5 @@
-<v-card class="mx-auto overflow-hidden" height="400">
-  <v-app-bar color="deep-purple" dark>
+<v-card class="mx-auto overflow-hidden" height="100vh">
+  <v-app-bar dark class="primary">
     <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
     <v-toolbar-title>Team Tasker</v-toolbar-title>
   </v-app-bar>
@@ -14,103 +14,79 @@
           <v-list-item-icon>
             <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>Dashboard</v-list-item-title>
+          <v-list-item-title> Dashboard</v-list-item-title>
         </v-list-item>
 
         <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-account</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>Account</v-list-item-title>
+          <v-list-item-title> Account</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title> logout</v-list-item-title>
         </v-list-item>
       </v-list-item-group>
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block>Logout</v-btn>
+        <v-btn large block color="secondary" light>GitHub</v-btn>
+      </div>
+      <div class="pa-2">
+        <v-btn large block color="primary">About</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
-</v-card>
-<div>
-  <v-app-bar
-    color="deep-dark accent-4"
-    dense
-    dark
-  >
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-    <v-toolbar-title>Team Tasker</v-toolbar-title>
-
-    <v-spacer></v-spacer>
-
-    <v-menu
-      left
-      bottom
-    >
-      <template v-slot:activator="{ on }">
-        <v-btn icon v-on="on">
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-      </template>
-
-      <v-list>
-        <v-list-item
-          v-for="n in 5"
-          :key="n"
-          @click="() => {}"
-        >
-          <v-list-item-title>Option {{ n }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </v-app-bar>
-</div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container">
-    <router-link to="/" class="navbar-brand">Team Tasker</router-link>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarColor01"
-      aria-controls="navbarColor01"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item" :class="{'active' : (currentRouteName === 'home')}">
-          <router-link to="/" class="nav-link">Home</router-link>
-        </li>
-        <li class="nav-item" :class="{'active' : (currentRouteName === 'about')}">
-          <router-link to="/about" class="nav-link">About</router-link>
-        </li>
-        <li class="nav-item" :class="{'active' : (currentRouteName === 'contact')}">
-          <router-link to="/contact" class="nav-link">Contact</router-link>
-        </li>
-        <li class="nav-item"
-          v-if="!isLoggedIn && showLogin">
-          <router-link to="/login" class="nav-link">Login</router-link>
-        </li>
-        <li class="nav-item" v-if="!isLoggedIn && showSignUp">
-          <router-link to="signup" class="nav-link">Sign Up</router-link>
-        </li>
-        <li class="nav-item dropdown" v-if="isLoggedIn">
-          <a class="nav-link dropdown-toggle" href="#"
-            id="userDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            {{ username }}
-          </a>
-          <div class="dropdown-menu" aria-labelledby="userDropdown">
-            <router-link to="/dashboard" class="dropdown-item">Dashboard</router-link>
-            <div class="dropdown-divider"></div>
-            <a href="/logout" class="dropdown-item" @click.prevent="logoutUser">Logout</a>
-          </div>
-        </li>
-      </ul>
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <router-link to="/" class="navbar-brand">Team Tasker</router-link>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarColor01"
+        aria-controls="navbarColor01"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" :class="{'active' : (currentRouteName === 'home')}">
+            <router-link to="/" class="nav-link">Home</router-link>
+          </li>
+          <li class="nav-item" :class="{'active' : (currentRouteName === 'about')}">
+            <router-link to="/about" class="nav-link">About</router-link>
+          </li>
+          <li class="nav-item" :class="{'active' : (currentRouteName === 'contact')}">
+            <router-link to="/contact" class="nav-link">Contact</router-link>
+          </li>
+          <li class="nav-item"
+            v-if="!isLoggedIn && showLogin">
+            <router-link to="/login" class="nav-link">Login</router-link>
+          </li>
+          <li class="nav-item" v-if="!isLoggedIn && showSignUp">
+            <router-link to="signup" class="nav-link">Sign Up</router-link>
+          </li>
+          <li class="nav-item dropdown" v-if="isLoggedIn">
+            <a class="nav-link dropdown-toggle" href="#"
+              id="userDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              {{ username }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="userDropdown">
+              <router-link to="/dashboard" class="dropdown-item">Dashboard</router-link>
+              <div class="dropdown-divider"></div>
+              <a href="/logout" class="dropdown-item" @click.prevent="logoutUser">Logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav> -->
+</v-card>
