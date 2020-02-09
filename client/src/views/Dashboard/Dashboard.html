@@ -1,0 +1,31 @@
+<div class="container mt-5">
+  <div class="flex-container">
+    <div class="">
+      <h1>Other Groups</h1>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <group-card :group="inboxGroup"></group-card>
+    <group-card :group="assignedTasks"></group-card>
+  </div>
+  <div class="flex-container mt-5">
+    <div class="">
+      <h1>Groups</h1>
+    </div>
+    <div class="ml-auto text-right">
+      <button type="button" class="btn btn-success"
+        data-toggle="modal" data-target="#addGroupModal">Add Group</button>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <group-card v-for="group in groups" :group="group" :key="group.groupId"></group-card>
+    <div class="col-12 mt-4" v-if="groups.length === 0">
+      <h4>No groups found! Create groups now!</h4>
+    </div>
+  </div>
+  <add-group v-on:refresh-groups="refreshGroups"></add-group>
+  <edit-group v-for="group in groups" :group="group"
+    :key="group.groupId" v-on:refresh-groups="refreshGroups"></edit-group>
+</div>

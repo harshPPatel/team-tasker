@@ -1,0 +1,57 @@
+<!-- Modal -->
+<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog"
+  aria-labelledby="addGroupModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add New Group</h5>
+        <button type="button" class="close" id="addGroupClose" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <error-component v-if="serverError" :error="serverError"></error-component>
+          <form id="addGroupForm" @submit.prevent="submitForm">
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label class="col-form-label" for="addGroupName">Group Name</label>
+                <!-- add required -->
+                <input type="text" class="form-control" placeholder="Group Name" id="addGroupName"
+                  required v-model="groupName"
+                  :class="{ 'is-invalid': (groupNameError && !isValidGroupName) }"
+                  @input="validateGroupName">
+                <div class="invalid-feedback" v-if="groupNameError">
+                  {{ groupNameError }}
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="col-form-label" for="addGroupImage">Group Image</label>
+                <!-- add required -->
+                <input type="file" class="form-control-file" accept="image/*"
+                  placeholder="Group Image" id="addGroupImage" required
+                  :class="{ 'is-invalid': (groupImageError && !isValidGroupImage) }"
+                  @input="validateGroupImage">
+                <div class="invalid-feedback" v-if="groupImageError">
+                  {{ groupImageError }}
+                </div>
+              </div>
+              <div class="col-6">
+                <button type="reset" class="btn btn-info btn-block mt-4" :disabled="isLoading">
+                  Reset
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="submit" class="btn btn-primary btn-block mt-4"
+                  :disabled="!(isValidGroupName && isValidGroupImage) || isLoading">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

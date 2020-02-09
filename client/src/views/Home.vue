@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="jumbotron">
-      <h1 class="display-3"><small>Welcome to</small> Team Tasker</h1>
+      <h1 class="display-3">
+        <small>Welcome to</small> Team Tasker
+      </h1>
       <p class="lead">
         A simple website to manage your tasks. Sign up today! It is free and secure!
       </p>
@@ -21,7 +23,5 @@
 <script>
 export default {
   name: 'home',
-  components: {
-  },
 };
 </script>

@@ -24,7 +24,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/Login.vue'),
+    component: () => import('../views/Login/Login.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.token) {
         User.verify()
@@ -37,7 +37,7 @@ const routes = [
   {
     path: '/signup',
     name: 'signup',
-    component: () => import('../views/Signup.vue'),
+    component: () => import('../views/Signup/Signup.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.token) {
         User.verify()
@@ -50,7 +50,7 @@ const routes = [
   {
     path: '/admin/dashboard',
     name: 'admin-dashboard',
-    component: () => import('../views/admin/Dashboard.vue'),
+    component: () => import('../views/AdminDashboard/AdminDashboard.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.token) {
         User.verify()
@@ -76,7 +76,7 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: () => import('../views/Dashboard.vue'),
+    component: () => import('../views/Dashboard/Dashboard.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.token) {
         User.verify()
@@ -109,7 +109,7 @@ const routes = [
   {
     path: '/groups/:id',
     name: 'group',
-    component: () => import('../views/Group.vue'),
+    component: () => import('../views/Group/Group.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.token) {
         User.verify()

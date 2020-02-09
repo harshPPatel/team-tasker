@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="mt-5 mb-5 text-center">
+    <h1 class="display-3">Sign Up</h1>
+    <p class="lead">Sign Up to Team Tasker and start creatings your tasks!</p>
+  </div>
+  <hr class="mb-5">
+  <form @submit.prevent="submitForm" class="col-6 mr-auto ml-auto">
+    <error-component v-if="errors.server" :error="errors.server"></error-component>
+    <div class="form-group">
+      <label class="col-form-label" for="username">Username</label>
+      <!-- add required -->
+      <input type="text" class="form-control"
+        placeholder="Username" id="username" v-model="user.username"
+        :class="{ 'is-invalid': (errors.username && !isValidUsername) }"
+        @input="validateUsername">
+      <div class="invalid-feedback" v-if="errors.username">
+        {{ errors.username }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-form-label" for="password">Password</label>
+      <!-- add required -->
+      <input type="password" class="form-control"
+        placeholder="Password" id="password" v-model="user.password"
+        :class="{ 'is-invalid': (errors.password && !isValidPassword) }"
+        @input="validatePassword">
+      <div class="invalid-feedback" v-if="errors.password">
+        {{ errors.password }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-form-label" for="confirmPassword">Confirm Password</label>
+      <!-- add required -->
+      <input type="password" class="form-control"
+        placeholder="Confirm Password" id="confirmPassword" v-model="user.confirmPassword"
+        :class="{ 'is-invalid': (errors.confirmPassword && !isValidConfirmPassword) }"
+        @input="validateConfirmPassword">
+      <div class="invalid-feedback" v-if="errors.confirmPassword">
+        {{ errors.confirmPassword }}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block mt-4"
+      :disabled="(!(isValidUsername && isValidPassword && isValidConfirmPassword))
+        || isLoading">
+      Submit
+    </button>
+  </form>
+</div>

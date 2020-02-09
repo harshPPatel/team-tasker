@@ -1,0 +1,44 @@
+<div class="container mt-5">
+  <div class="groupImage" v-if="group">
+    <img v-if="!isSpecial" :src="`https://team-tasker-api.000webhostapp.com/uploads/${group.image}`" :alt="group.name">
+    <img v-if="isSpecial" :src="group.image" :alt="group.name">
+  </div>
+  <div class="flex-container mt-4" v-if="group">
+    <div class="">
+      <h1>{{ group.name }}</h1>
+    </div>
+    <div class="ml-auto text-right">
+      <button type="button" class="btn btn-outline-danger"
+        data-toggle="modal" :data-target="`#deleteGroupModal${group.groupId}`"
+        v-if="!isSpecial">
+          Delete Group
+      </button>
+      <button type="button" class="btn btn-outline-info ml-3"
+        data-toggle="modal" :data-target="`#editGroupModal${group.groupId}`"
+        v-if="!isSpecial">
+          Edit Group
+      </button>
+      <button type="button" class="btn btn-success ml-3"
+        data-toggle="modal" data-target="#addTaskModal"
+        v-if="groupId !== 'assignedTasks'">Add Task</button>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <!-- <group-card v-for="task in tasks" :group="group" :key="group.groupId"></group-card> -->
+    <task-card v-for="task in tasks" :task="task" :key="task.taskId"
+      v-on:refresh-page="refreshPage"></task-card>
+    <div class="col-12 mt-4" v-if="tasks.length === 0">
+      <h4>No tasks found! Create tasks now!</h4>
+    </div>
+  </div>
+  <edit-group v-if="group && !isSpecial" :group="group"
+    v-on:refresh-groups="refreshGroup"></edit-group>
+  <delete-group v-if="group && !isSpecial" :groupId="group.groupId"></delete-group>
+  <add-task v-if="group" :groupId="isSpecial ? 'null' : group.groupId"
+    v-on:refresh-page="refreshPage"></add-task>
+  <edit-task v-for="task in tasks" :key="`edit-${task.taskId}`" :editTask="task"
+    v-on:refresh-tasks="refreshTasks"></edit-task>
+  <delete-task v-for="task in tasks" :key="`delete-${task.taskId}`" :taskId="task.taskId"
+    v-on:refresh-tasks="refreshTasks"></delete-task>
+</div>
