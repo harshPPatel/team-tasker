@@ -1,0 +1,51 @@
+<v-container>
+  <v-row>
+    <v-col class="text-center" cols="12">
+      <h1 class="display-3 mb-8 mt-10">Sign Up</h1>
+    </v-col>
+  </v-row>
+  <v-row justify="center">
+    <v-col cols="4">
+      <v-form v-model="isValid">
+        <v-text-field
+          v-model="username"
+          :rules="usernameRules"
+          counter
+          label="Username"
+          required>
+        </v-text-field>
+        <v-text-field
+          v-model="password"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :rules="passwordRules"
+          :type="showPassword ? 'text' : 'password'"
+          name="password"
+          label="Password"
+          hint="At least 6 characters"
+          counter
+          @click:append="showPassword = !showPassword">
+        </v-text-field>
+        <v-text-field
+          v-model="confirmPassword"
+          :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :rules="[
+            (v) => !!v || 'Confirm Password field is required',
+            this.password === this.confirmPassword
+              || 'Password and Confrim Password does not match.'
+          ]"
+          :type="showConfirmPassword ? 'text' : 'password'"
+          name="confirmPassword"
+          label="Confirm Password"
+          counter
+          @click:append="showConfirmPassword = !showConfirmPassword">
+        </v-text-field>
+        <v-btn large block depressed color="primary" class="mt-6"
+          :disabled="!isValid"
+          @click="isLoading = true"
+          :loading="isLoading">
+          Submit
+        </v-btn>
+      </v-form>
+    </v-col>
+  </v-row>
+</v-container>

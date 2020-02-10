@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     username: '',
-    isLoggedIn: true,
+    isLoggedIn: false,
     theme: 0,
   },
   mutations: { },
