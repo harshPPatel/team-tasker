@@ -6,6 +6,9 @@
   </v-row>
   <v-row justify="center">
     <v-col cols="4">
+      <v-alert type="error" v-if="error">
+        {{ error }}
+      </v-alert>
       <v-form v-model="isValid">
         <v-text-field
           v-model="username"
@@ -41,7 +44,7 @@
         </v-text-field>
         <v-btn large block depressed color="primary" class="mt-6"
           :disabled="!isValid"
-          @click="isLoading = true"
+          @click="submitForm"
           :loading="isLoading">
           Submit
         </v-btn>

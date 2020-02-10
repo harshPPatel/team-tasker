@@ -1,11 +1,14 @@
 <template src="./Signup.html"></template>
 
 <script>
+import SIGNUP_MUTATION from '../../graphql/SIGNUP';
+
 export default {
   name: 'signup',
   data: () => ({
     isValid: false,
     isLoading: false,
+    error: null,
     username: '',
     usernameRules: [
       (v) => !!v || 'Username is required',
@@ -24,5 +27,34 @@ export default {
     confirmPassword: '',
     showConfirmPassword: false,
   }),
+  methods: {
+    submitForm() {
+      this.error = null;
+      this.isLoading = true;
+      const payload = {
+        username: this.username.toString(),
+        password: this.password.toString(),
+        confirmPassword: this.confirmPassword.toString(),
+      };
+      this.$apollo.mutate({
+        mutation: SIGNUP_MUTATION,
+        variables: {
+          input: payload,
+        },
+      })
+        .then(() => {
+          this.$router.push({
+            path: '/login',
+            params: {
+              successMessage: 'Your account has been created successfully. Please Login to get access.',
+            },
+          });
+        })
+        .catch((err) => {
+          this.error = err.message;
+        });
+      this.isLoading = false;
+    },
+  },
 };
 </script>
