@@ -1,0 +1,84 @@
+<v-app id="inspire">
+  <v-navigation-drawer v-model="drawer" app clipped>
+    <v-list dense>
+      <v-list-item v-if="User.isLoggedIn" to="/dashboard">
+        <v-list-item-action>
+          <v-icon>mdi-home</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Dashboard</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-if="User.isLoggedIn" to="/settings">
+        <v-list-item-action>
+          <v-icon>mdi-settings</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Settings</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-if="!User.isLoggedIn" to="/login">
+        <v-list-item-action>
+          <v-icon>mdi-exit-to-app</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Login</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-if="!User.isLoggedIn" to="/signup">
+        <v-list-item-action>
+          <v-icon>mdi-thumb-up</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>SignUp</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-if="User.isLoggedIn">
+        <v-list-item-action>
+          <v-icon>mdi-exit-to-app</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn large block color="grey lighten-2"
+          href="https://github.com/harshPPatel/team-tasker/"
+          target="_blank">
+          GitHub
+          <v-icon class="ml-2 body-1">mdi-open-in-new</v-icon>
+        </v-btn>
+      </div>
+      <div class="pa-2">
+        <v-btn large block color="grey lighten-2"
+          to="/">
+          Home
+        </v-btn>
+      </div>
+      <div class="pa-2">
+        <v-btn large block color="primary"
+          to="/about">
+          About
+        </v-btn>
+      </div>
+    </template>
+  </v-navigation-drawer>
+
+  <v-app-bar
+    app
+    clipped-left
+  >
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-toolbar-title>Team Tasker</v-toolbar-title>
+  </v-app-bar>
+
+  <v-content>
+    <router-view></router-view>
+  </v-content>
+
+  <v-footer app>
+    <span>&copy; 2019</span>
+  </v-footer>
+</v-app>
