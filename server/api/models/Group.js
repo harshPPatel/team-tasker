@@ -16,7 +16,7 @@ const groupSchema = Schema({
   },
   description: {
     type: String,
-    maxLength: 200,
+    maxLength: 500,
     trim: true,
   },
   username: {

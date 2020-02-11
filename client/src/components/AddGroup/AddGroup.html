@@ -8,35 +8,38 @@
     </v-card-title>
     <v-card-text>
       <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field label="Name*" required></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <vue-editor v-model="content" :editor-toolbar="customToolbar" />
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-select
-              :items="['0-17', '18-29', '30-54', '54+']"
-              label="Age*"
-              required
-            ></v-select>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-autocomplete
-              :items="['Skiing', 'Ice hockey', 'Soccer']"
-              label="Interests"
-              multiple
-            ></v-autocomplete>
-          </v-col>
-        </v-row>
+        <v-form v-model="isValid">
+          <v-row>
+            <v-col cols="12">
+              <v-text-field label="Name"
+                v-model="group.name"
+                :rules="groupNameRules"
+                counter
+                required>
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <p><b>Description:</b></p>
+              <editor :content="group.description">
+              </editor>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field label="Image URL"
+                type="url"
+                v-model="group.imageUrl"
+                :rules="groupImageRules"
+                counter>
+              </v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-container>
       <small>*indicates required field</small>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-      <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+      <v-btn color="primary" text @click="dialog = false">Close</v-btn>
+      <v-btn color="primary" @click="dialog = false">Save</v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
