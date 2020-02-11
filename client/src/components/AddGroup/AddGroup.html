@@ -13,7 +13,7 @@
             <v-text-field label="Name*" required></v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-textarea label="Description*" required></v-textarea>
+            <vue-editor v-model="content" :editor-toolbar="customToolbar" />
           </v-col>
           <v-col cols="12" sm="6">
             <v-select
