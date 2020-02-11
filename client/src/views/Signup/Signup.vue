@@ -42,16 +42,21 @@ export default {
           input: payload,
         },
       })
-        .then(() => {
+        .then(({ data }) => {
           this.$router.push({
-            path: '/login',
+            name: 'Login',
             params: {
               successMessage: 'Your account has been created successfully. Please Login to get access.',
+              username: data.signup.username,
             },
           });
         })
         .catch((err) => {
-          this.error = err.message;
+          if (err.message.includes('E11000')) {
+            this.error = 'Username is already in use. Please use different username';
+          } else {
+            this.error = err.message.replace('GraphQL error: ', '');
+          }
         });
       this.isLoading = false;
     },

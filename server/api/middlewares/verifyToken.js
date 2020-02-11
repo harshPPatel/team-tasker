@@ -53,9 +53,9 @@ const validateToken = async (req, res, next) => {
 
     // Throwing the error if user does not exists
     if (!user) {
-      res.status(401);
+      res.status(404);
       res.json({
-        message: 'Unauthorized access!',
+        message: 'User does not exists.',
       });
       return;
     }

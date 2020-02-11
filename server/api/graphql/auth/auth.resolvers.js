@@ -74,6 +74,7 @@ const logout = async (_, args, context) => {
 };
 
 const verify = (_, args, context) => {
+  console.log(context);
   // Throwing the error if token is not valid
   if (!context.isValidToken) {
     return new AuthenticationError('Token is required');

@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+
+import store from '../store';
 import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
@@ -19,6 +21,42 @@ const routes = [
     path: '/signup',
     name: 'Signup',
     component: () => import(/* webpackChunkName: "signup" */ '../views/Signup/Signup.vue'),
+    beforeEnter: async (to, from, next) => {
+      if (localStorage.token || store.state.User.isLoggedIn) {
+        next('/dashboard');
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login/Login.vue'),
+    beforeEnter: async (to, from, next) => {
+      if (localStorage.token || store.state.User.isLoggedIn) {
+        next('/dashboard');
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard/Dashboard.vue'),
+    beforeEnter: async (to, from, next) => {
+      if (localStorage.token || store.state.User.isLoggedIn) {
+        next();
+      } else {
+        next({
+          name: 'Login',
+          params: {
+            errorMessage: 'Please login to get access',
+          },
+        });
+      }
+    },
   },
 ];
 

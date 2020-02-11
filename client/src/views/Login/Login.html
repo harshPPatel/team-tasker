@@ -1,0 +1,43 @@
+<v-container>
+  <v-row>
+    <v-col class="text-center" cols="12">
+      <h1 class="display-3 mb-8 mt-10">Login</h1>
+    </v-col>
+  </v-row>
+  <v-row justify="center">
+    <v-col cols="4">
+      <v-alert type="error" v-if="error">
+        {{ error }}
+      </v-alert>
+      <v-alert type="success" v-if="successMessage">
+        {{ successMessage }}
+      </v-alert>
+      <v-form v-model="isValid">
+        <v-text-field
+          v-model="username"
+          :rules="usernameRules"
+          counter
+          label="Username"
+          required>
+        </v-text-field>
+        <v-text-field
+          v-model="password"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :rules="passwordRules"
+          :type="showPassword ? 'text' : 'password'"
+          name="password"
+          label="Password"
+          hint="At least 6 characters"
+          counter
+          @click:append="showPassword = !showPassword">
+        </v-text-field>
+        <v-btn large block depressed color="primary" class="mt-6"
+          :disabled="!isValid"
+          @click="submitForm"
+          :loading="isLoading">
+          Login
+        </v-btn>
+      </v-form>
+    </v-col>
+  </v-row>
+</v-container>
