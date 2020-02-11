@@ -1,12 +1,21 @@
 <template>
-  <h1>Dashboard</h1>
+  <v-container>
+    <v-row justify="space-between">
+      <v-col cols="6">Groups</v-col>
+      <v-col cols="6" class="text-right">
+        <add-group></add-group>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import AddGroup from '@/components/AddGroup/AddGroup.vue';
 import TOKEN_VERIFY from '../../graphql/TOKEN_VERIFY';
 
 export default {
   name: 'dashboard',
+  components: { AddGroup },
   mounted() {
     this.$apollo.mutate({
       mutation: TOKEN_VERIFY,

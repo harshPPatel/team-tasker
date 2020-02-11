@@ -27,7 +27,7 @@
 ### User
 
 * [ ] Password Change
-* [ ] Theme Change
-* [ ] Delete Account
+* [x] Theme Change
+* [x] Delete Account
 * [ ] Reset Account
 
