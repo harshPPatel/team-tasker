@@ -2,7 +2,7 @@
   <v-container>
     <v-row justify="space-between" align="center">
       <v-col cols="6">
-        <h2>Groups</h2>
+        <h2>Your Task Groups</h2>
       </v-col>
       <v-col cols="6" class="text-right">
         <add-group @success="showSuccessMessage"></add-group>
