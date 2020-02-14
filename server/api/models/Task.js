@@ -30,7 +30,6 @@ const taskSchema = Schema({
   },
   username: {
     type: String,
-    unique: true,
     required: true,
     trim: true,
     minLength: 3,

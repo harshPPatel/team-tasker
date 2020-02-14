@@ -3,12 +3,15 @@
     <v-btn color="primary" v-on="on" large>Add Group</v-btn>
   </template>
   <v-card>
+    <v-alert type="error" v-if="error">
+      {{ error }}
+    </v-alert>
     <v-card-title>
       <span class="headline">Group Details</span>
     </v-card-title>
     <v-card-text>
       <v-container>
-        <v-form v-model="isValid">
+        <v-form v-model="isValid" ref="addGroupForm">
           <v-row>
             <v-col cols="12">
               <v-text-field label="Name"
@@ -20,8 +23,9 @@
             </v-col>
             <v-col cols="12">
               <p><b>Description:</b></p>
-              <editor :content="group.description">
-              </editor>
+              <vue-editor v-model="group.description"
+                placeholder="Enter here..."
+                :editor-toolbar="editorConfig"/>
             </v-col>
             <v-col cols="12">
               <v-text-field label="Image URL"
@@ -34,12 +38,16 @@
           </v-row>
         </v-form>
       </v-container>
-      <small>*indicates required field</small>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" text @click="dialog = false">Close</v-btn>
-      <v-btn color="primary" @click="dialog = false">Save</v-btn>
+      <v-btn color="primary" text @click="closeForm">Close</v-btn>
+      <v-btn color="primary"
+        @click="submitForm"
+        :disabled="!isValid"
+        :loading="isLoading">
+        Save
+      </v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
