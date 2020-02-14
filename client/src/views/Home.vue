@@ -11,7 +11,7 @@
         <v-row>
           <v-col class="text-center" cols="12">
             <v-btn to="/about" outlined large color="primary">about</v-btn>
-            <v-btn to="/about" depressed large color="primary" class="ml-5">signup</v-btn>
+            <v-btn to="/signup" depressed large color="primary" class="ml-5">signup</v-btn>
           </v-col>
         </v-row>
       </v-col>
