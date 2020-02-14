@@ -60,9 +60,8 @@ export default {
       })
         .then(({ data }) => {
           this.$emit('success', data.createGroup.message);
-          // TODO: Add group to store!
+          this.$store.commit('Group/addGroup', data.createGroup.group);
           this.dialog = false;
-          this.isLoading = false;
         })
         .catch((err) => {
           this.error = err.message;

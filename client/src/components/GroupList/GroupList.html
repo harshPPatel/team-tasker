@@ -1,0 +1,18 @@
+<div>
+  <v-row>
+    <group v-for="group in Group.groups"
+      :key="group.id"
+      :group="group"></group>
+  </v-row>
+  <h1 v-if="Group.groups === null">
+    Loading...
+  </h1>
+  <h1 v-if="Group.groups && !Group.groups.length">No Groups Found 🙁!</h1>
+  <v-snackbar v-model="snackbar" v-if="error">
+    {{ error }}
+    <v-btn color="blue" text
+      @click="snackbar = false">
+      Close
+    </v-btn>
+  </v-snackbar>
+</div>

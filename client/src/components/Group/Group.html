@@ -1,0 +1,33 @@
+<v-col sm="12" lg="6">
+  <v-card class="mx-auto" height="100%">
+    <v-img :src="group.imageUrl" height="200px"></v-img>
+    <v-card-title>
+      {{ group.name }}
+    </v-card-title>
+    <v-card-subtitle>
+      Created at {{ group.createdAt }}
+    </v-card-subtitle>
+    <v-card-actions>
+      <v-btn color="purple" text
+        :to="`/group/${group.id}`">
+        See Tasks
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon
+        @click="showDescription = !showDescription"
+        v-if="group.description">
+        <v-icon>
+          {{ showDescription ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+        </v-icon>
+      </v-btn>
+    </v-card-actions>
+
+    <v-expand-transition>
+      <div v-show="showDescription">
+        <v-divider></v-divider>
+        <v-card-text v-html="group.description" class="ql-content">
+        </v-card-text>
+      </div>
+    </v-expand-transition>
+  </v-card>
+</v-col>

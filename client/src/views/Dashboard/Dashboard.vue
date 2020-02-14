@@ -9,6 +9,7 @@
       </v-col>
     </v-row>
     <v-divider class="mt-2 mb-5" />
+    <group-list></group-list>
     <v-snackbar v-model="snackbar.isOpen">
       {{ snackbar.text }}
       <v-btn color="blue" text
@@ -21,11 +22,12 @@
 
 <script>
 import AddGroup from '@/components/AddGroup/AddGroup.vue';
+import GroupList from '@/components/GroupList/GroupList.vue';
 import TOKEN_VERIFY from '../../graphql/TOKEN_VERIFY';
 
 export default {
   name: 'dashboard',
-  components: { AddGroup },
+  components: { AddGroup, GroupList },
   data: () => ({
     snackbar: {
       isOpen: false,

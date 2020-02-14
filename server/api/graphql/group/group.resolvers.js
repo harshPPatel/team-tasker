@@ -12,7 +12,7 @@ const groups = async (obj, args, context) => {
   try {
     const result = await Group.find({
       username: context.username,
-    }).exec();
+    }).sort({ createdAt: 'descending' }).exec();
     return result;
   } catch (err) {
     return new ApolloError(err.message);
