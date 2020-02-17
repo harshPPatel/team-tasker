@@ -1,8 +1,8 @@
 <div>
   <v-row>
-    <group v-for="group in Group.groups"
+    <group-card v-for="group in Group.groups"
       :key="group.id"
-      :group="group"></group>
+      :group="group"></group-card>
   </v-row>
   <h1 v-if="Group.groups === null">
     Loading...

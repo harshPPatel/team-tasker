@@ -58,6 +58,23 @@ const routes = [
       }
     },
   },
+  {
+    path: '/group/:id',
+    name: 'Group',
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Group/Group.vue'),
+    beforeEnter: async (to, from, next) => {
+      if (localStorage.token || store.state.User.isLoggedIn) {
+        next();
+      } else {
+        next({
+          name: 'Login',
+          params: {
+            errorMessage: 'Please login to get access',
+          },
+        });
+      }
+    },
+  },
 ];
 
 const router = new VueRouter({

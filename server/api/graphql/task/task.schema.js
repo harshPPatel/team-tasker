@@ -1,7 +1,7 @@
 const typeDefs = `
   type Task {
     "Id of the Task"
-    ID: String
+    id: ID
     "Task's title"
     task: String
     "Task's description"

@@ -4,12 +4,12 @@
 import { mapState } from 'vuex';
 
 import GROUPS from '../../graphql/GROUPS';
-import Group from '../Group/Group.vue';
+import GroupCard from '../GroupCard/GroupCard.vue';
 
 export default {
   name: 'group-list',
   computed: mapState(['Group']),
-  components: { Group },
+  components: { GroupCard },
   data: () => ({
     error: false,
     snackbar: false,

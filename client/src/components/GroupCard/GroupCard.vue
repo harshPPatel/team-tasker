@@ -1,4 +1,4 @@
-<template src="./Group.html"></template>
+<template src="./GroupCard.html"></template>
 
 <script>
 export default {
