@@ -40,10 +40,17 @@ const groupSingle = async (obj, args, context) => {
 
   try {
     const tasks = await Task.find({ groupId }).exec();
-    return {
-      ...group,
+    const responsePayload = {
+      id: group._id,
+      name: group.name,
+      username: group.username,
+      description: group.description,
+      imageUrl: group.imageUrl,
+      createdAt: group.createdAt,
+      updatedAt: group.updatedAt,
       tasks,
     };
+    return responsePayload;
   } catch (err) {
     return new ApolloError(err.message);
   }

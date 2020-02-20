@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`query tasks($id: String!) {
+export default gql`query group($id: String!) {
   group(id: $id) {
     id
     name

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "fecha": "^4.1.0",
     "graphql-tag": "^2.10.3",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.0-beta.11",
