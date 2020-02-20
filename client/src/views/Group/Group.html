@@ -20,7 +20,7 @@
     <v-row justify="space-between" align="center">
       <v-col cols="6">
         <h1>{{ group.name }}</h1>
-        <div v-html="group.description"></div>
+        <div class="ql-content mb-3" v-html="group.description"></div>
         <p class="caption">
           <b>Created At:</b> {{ computedGroupCreatedAt }},
           <b>Updated At:</b> {{ computedGroupUpdatedAt }}

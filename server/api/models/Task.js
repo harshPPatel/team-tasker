@@ -10,7 +10,6 @@ const taskSchema = Schema({
   },
   description: {
     type: String,
-    maxLength: 200,
     trim: true,
   },
   isDone: {

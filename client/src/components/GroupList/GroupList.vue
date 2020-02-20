@@ -19,9 +19,7 @@ export default {
       || !this.$store.state.Group.groups.length) {
       this.$apollo.query({ query: GROUPS })
         .then(({ data }) => {
-          setTimeout(() => {
-            this.$store.commit('Group/setGroups', data.groups);
-          }, 2000);
+          this.$store.commit('Group/setGroups', data.groups);
         })
         .catch((err) => {
           this.error = err.message;

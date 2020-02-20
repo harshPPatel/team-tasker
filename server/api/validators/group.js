@@ -12,8 +12,7 @@ const commonSchema = {
     .max(40)
     .required(),
   description: joi.string()
-    .trim()
-    .max(200),
+    .trim(),
   imageUrl: joi.string()
     .trim()
     .pattern(URL_REGEX, { name: 'Image URL' }),
