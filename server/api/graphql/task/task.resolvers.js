@@ -11,14 +11,14 @@ const createTask = (_, args, context) => {
   }
   const input = args.task;
   return TaskValidator.create(input)
-    .then((data) => {
+    .then(async (data) => {
       const databasePayload = {
         ...data.value,
         username: context.username,
       };
 
       // Validating that group exists in the database
-      const group = Group.findOne({ _id: input.groupId }).exec();
+      const group = await Group.findOne({ _id: input.groupId }).exec();
 
       if (!group) {
         return new ValidationError('Group does not exists');
