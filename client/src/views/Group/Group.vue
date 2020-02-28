@@ -15,7 +15,7 @@ export default {
     headers: [
       { text: 'Task', value: 'task' },
       { text: 'Urgency', value: 'urgency' },
-      { text: 'Is Done', value: 'isDone' },
+      { text: 'Is Done?', value: 'isDone' },
       { text: 'Created At', value: 'createdAt' },
       { text: 'Actions', value: 'action', sortable: false },
       { text: '', value: 'data-table-expand' },
@@ -23,18 +23,20 @@ export default {
     dialog: false,
     editedIndex: -1,
     editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      id: '',
+      task: '',
+      description: '',
+      isDone: 0,
+      urgency: 0,
+      dueDate: '',
     },
     defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      id: '',
+      task: '',
+      description: '',
+      isDone: 0,
+      urgency: 0,
+      dueDate: '',
     },
   }),
   computed: {
@@ -105,6 +107,9 @@ export default {
       const index = this.group.tasks.indexOf(item);
       // eslint-disable-next-line
       confirm('Are you sure you want to delete this item?') && this.group.tasks.splice(index, 1);
+      // Add delete confirmation dialog
+      // Make delete request
+      // update store
     },
 
     close() {
@@ -117,12 +122,19 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        // make request for edit
+        Object.assign(this.group.tasks[this.editedIndex], this.editedItem);
+        // update vuex store and data
+        // REFACTOR: bind markup values with vuex store not group data prop
       } else {
-        this.desserts.push(this.editedItem);
+        // Make request for new task
+        this.group.tasks.push(this.editedItem);
+        // update vuex store and data
       }
       this.close();
     },
+
+    computedDate: (date) => format(+date, 'mediumDate'),
   },
 };
 </script>
