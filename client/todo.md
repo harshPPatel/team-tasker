@@ -24,3 +24,5 @@ Change icons from 'mdi-*' to 'icon'
   remove material-design-icons-iconfont libary
 
 refactor onMount method and move it in separate file
+
+refactor API call code in seperate files and pass `this.$apollo` as parameter OR just import Vue in that file!
