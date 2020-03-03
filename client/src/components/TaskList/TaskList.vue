@@ -42,6 +42,7 @@ export default {
       { text: 'Medium', value: 1, color: 'green' },
       { text: 'High', value: 2, color: 'red' },
     ],
+    dateMenu: false,
   }),
   computed: {
     formTitle() {
