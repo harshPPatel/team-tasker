@@ -23,20 +23,33 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.task" label="Task Title"></v-text-field>
+                <p v-if="editedItem.id">Task ID: {{ editedItem.id }}</p>
+                <v-col cols="12">
+                  <v-text-field v-model="editedItem.task" label="Task Title">
+                  </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.isDone" label="Calories"></v-text-field>
+                <v-col cols="12" v-if="editedItem.id">
+                  <v-checkbox v-model="editedItem.isDone" label="Is Done?" value="Is Done?">
+                  </v-checkbox>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
+                <v-col cols="12">
+                  <vue-editor v-model="editedItem.description"
+                    placeholder="Task Description"
+                    :editor-toolbar="editorConfig"/>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
+                <v-col cols="12">
+                  <v-select
+                    v-model="editedItem.urgency"
+                    :items="urgencyOptions"
+                    label="Task Urgency"
+                    required
+                  ></v-select>
+                  <v-text-field v-model="editedItem.carbs" label="Carbs (g)">
+                  </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
+                <v-col cols="12">
+                  <v-text-field v-model="editedItem.protein" label="Protein (g)">
+                  </v-text-field>
                 </v-col>
               </v-row>
             </v-container>

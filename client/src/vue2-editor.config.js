@@ -13,3 +13,11 @@ export default [
   [{ indent: '-1' }, { indent: '+1' }],
   ['link', 'formula'],
 ];
+
+export const taskEditor = [
+  ['bold', 'italic', 'underline', 'strike'],
+  [{ header: 1 }, { header: 2 }],
+  ['code-block'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  ['link', 'formula'],
+];
