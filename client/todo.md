@@ -26,3 +26,14 @@ Change icons from 'mdi-*' to 'icon'
 refactor onMount method and move it in separate file
 
 refactor API call code in seperate files and pass `this.$apollo` as parameter OR just import Vue in that file!
+
+The way to edit group and delete it
+
+show snackbars when any CRUD function is executed
+
+IMPORTANT: Add validation rules to the add/edit task dialogues
+IMPORTANT: Add error alert to each form and success snackbar to each forms!
+
+IMPORTANT: make tweaks to make app look good! for example change the 'created At' in the individual group page, it is not a right way man!
+
+IMPORTANT: try refactoring the code but not too much

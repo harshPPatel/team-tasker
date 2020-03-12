@@ -8,6 +8,12 @@ export default {
     setTasks(state, value) {
       state.tasks = value;
     },
+    setTask(state, value) {
+      const index = state.tasks.indexOf(value);
+      if (index) {
+        state.tasks[index] = { ...value };
+      }
+    },
     setGroupId(state, value) {
       state.groupId = value;
     },
@@ -15,6 +21,9 @@ export default {
   getters: {
     getTask(state, id) {
       return state.tasks ? state.tasks.find((task) => task.id === id) : null;
+    },
+    getTasks(state) {
+      return state.tasks;
     },
     getGroupId(state) {
       return state.groupId;

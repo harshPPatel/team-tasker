@@ -2,12 +2,14 @@
 
 <script>
 import { format } from 'fecha';
+import { mapGetters } from 'vuex';
 
 import { taskEditor } from '../../vue2-editor.config';
+import EDIT_TASK from '../../graphql/EDIT_TASK';
 
 export default {
   name: 'task-list',
-  props: ['tasks'],
+  // props: ['tasks'],
   data: () => ({
     editorConfig: taskEditor,
     isLoading: false,
@@ -45,6 +47,9 @@ export default {
     dateMenu: false,
   }),
   computed: {
+    ...mapGetters({
+      tasks: 'Task/getTasks',
+    }),
     formTitle() {
       return this.editedIndex === -1 ? 'New Task' : 'Edit Task';
     },
@@ -56,10 +61,6 @@ export default {
     },
   },
   methods: {
-    allowedDates(val) {
-      return new Date(val) >= Date.now();
-    },
-
     editItem(item) {
       this.editedIndex = this.tasks.indexOf(item);
       this.editedItem = { ...item };
@@ -85,7 +86,28 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        // make request for edit
+        const payload = {
+          id: this.editedItem.id,
+          task: this.editedItem.task,
+          isDone: this.editedItem.isDone,
+          urgency: this.editedItem.urgency,
+          dueDate: this.editedItem.dueDate,
+          description: this.editedItem.description,
+        };
+        this.$apollo.mutate({
+          mutation: EDIT_TASK,
+          variables: {
+            task: payload,
+          },
+        })
+          .then(({ data }) => {
+            this.$store.commit('Task/setTask', data.task);
+            // this.$router.push({ path: '/dashboard' });
+          })
+          .catch((err) => {
+            this.error = err.message.replace('GraphQL error: ', '');
+          });
+        this.isLoading = false;
         Object.assign(this.group.tasks[this.editedIndex], this.editedItem);
         // update vuex store and data
         // REFACTOR: bind markup values with vuex store not group data prop
