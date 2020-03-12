@@ -56,6 +56,10 @@ export default {
     },
   },
   methods: {
+    allowedDates(val) {
+      return new Date(val) >= Date.now();
+    },
+
     editItem(item) {
       this.editedIndex = this.tasks.indexOf(item);
       this.editedItem = { ...item };
