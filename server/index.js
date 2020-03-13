@@ -39,6 +39,7 @@ const server = new ApolloServer({
     const errorId = v4();
     console.error(`Error Id: ${errorId}`);
     console.error(err);
+    console.error(err.extensions.exception.stacktrace);
 
     // Returing the GraphQLError
     return new GraphQLError(`Internal Error: ${errorId}`);

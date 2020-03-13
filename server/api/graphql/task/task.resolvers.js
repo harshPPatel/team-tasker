@@ -65,7 +65,7 @@ const editTask = (_, args, context) => {
       }
 
       // Returning the error if task does not belongs to user
-      if (!task.username !== context.username) {
+      if (task.username !== context.username) {
         return new AuthenticationError('Unauthorized Request!');
       }
 

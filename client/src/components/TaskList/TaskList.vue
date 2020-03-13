@@ -28,7 +28,7 @@ export default {
       task: '',
       description: '',
       isDone: 0,
-      urgency: 0,
+      urgency: 1,
       dueDate: '',
     },
     defaultItem: {
@@ -36,13 +36,13 @@ export default {
       task: '',
       description: '',
       isDone: 0,
-      urgency: 0,
+      urgency: 1,
       dueDate: '',
     },
     urgencyOptions: [
-      { text: 'Low', value: 0, color: 'orange' },
-      { text: 'Medium', value: 1, color: 'green' },
-      { text: 'High', value: 2, color: 'red' },
+      { text: 'Low', value: 0 },
+      { text: 'Medium', value: 1 },
+      { text: 'High', value: 2 },
     ],
     dateMenu: false,
   }),
@@ -64,6 +64,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.tasks.indexOf(item);
       this.editedItem = { ...item };
+      this.editedItem.dueDate = item.dueDate ? new Date(item.dueDate) : '';
       this.dialog = true;
     },
 
@@ -89,10 +90,10 @@ export default {
         const payload = {
           id: this.editedItem.id,
           task: this.editedItem.task,
+          description: this.editedItem.description,
           isDone: this.editedItem.isDone,
           urgency: this.editedItem.urgency,
-          dueDate: this.editedItem.dueDate,
-          description: this.editedItem.description,
+          dueDate: new Date(this.editedItem.dueDate),
         };
         this.$apollo.mutate({
           mutation: EDIT_TASK,
@@ -101,14 +102,16 @@ export default {
           },
         })
           .then(({ data }) => {
-            this.$store.commit('Task/setTask', data.task);
+            console.log(data.editTask.task);
+            this.$store.commit('Task/setTask', data.editTask.task);
             // this.$router.push({ path: '/dashboard' });
+            this.close();
           })
           .catch((err) => {
             this.error = err.message.replace('GraphQL error: ', '');
           });
-        this.isLoading = false;
-        Object.assign(this.group.tasks[this.editedIndex], this.editedItem);
+        // this.isLoading = false;
+        // Object.assign(this.tasks[this.editedIndex], this.editedItem);
         // update vuex store and data
         // REFACTOR: bind markup values with vuex store not group data prop
       } else {
@@ -116,7 +119,6 @@ export default {
         this.group.tasks.push(this.editedItem);
         // update vuex store and data
       }
-      this.close();
     },
 
     computedDate: (date) => format(+date, 'mediumDate'),

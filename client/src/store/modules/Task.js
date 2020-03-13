@@ -9,9 +9,9 @@ export default {
       state.tasks = value;
     },
     setTask(state, value) {
-      const index = state.tasks.indexOf(value);
-      if (index) {
-        state.tasks[index] = { ...value };
+      let task = state.tasks.find((t) => t.id === value.id);
+      if (task) {
+        task = { ...value };
       }
     },
     setGroupId(state, value) {

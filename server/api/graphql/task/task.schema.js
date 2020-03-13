@@ -37,7 +37,7 @@ const typeDefs = `
 
   input EditTaskInput {
     "Id of the task which will be edited"
-    id: ID!
+    id: ID
     "Task's title"
     task: String
     "Task's Description"
@@ -61,7 +61,6 @@ const typeDefs = `
 `;
 
 const queries = `
-  
 `;
 
 const mutations = `

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`query editTask($task: EditTaskInput!) {
+export default gql`mutation editTask($task: EditTaskInput!) {
   editTask(task: $task) {
     task {
       id
