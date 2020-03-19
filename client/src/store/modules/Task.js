@@ -9,10 +9,17 @@ export default {
       state.tasks = value;
     },
     setTask(state, value) {
-      let task = state.tasks.find((t) => t.id === value.id);
-      if (task) {
-        task = { ...value };
-      }
+      state.tasks.forEach((task) => {
+        if (task.id === value.id) {
+          /* eslint-disable no-param-reassign */
+          task.task = value.task;
+          task.description = value.description;
+          task.dueDate = value.dueDate ? value.duedate : null;
+          task.isDone = value.isDone;
+          task.updatedAt = value.updatedAt;
+          /* eslint-enable no-param-reassign */
+        }
+      });
     },
     setGroupId(state, value) {
       state.groupId = value;

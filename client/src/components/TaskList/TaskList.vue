@@ -17,7 +17,7 @@ export default {
       { text: 'Task', value: 'task' },
       { text: 'Urgency', value: 'urgency' },
       { text: 'Is Done?', value: 'isDone' },
-      { text: 'Created At', value: 'createdAt' },
+      { text: 'Due Date', value: 'dueDate' },
       { text: 'Actions', value: 'action', sortable: false },
       { text: '', value: 'data-table-expand' },
     ],
@@ -64,7 +64,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.tasks.indexOf(item);
       this.editedItem = { ...item };
-      this.editedItem.dueDate = item.dueDate ? new Date(item.dueDate) : '';
+      this.editedItem.dueDate = item.dueDate ? new Date(+item.dueDate) : '';
       this.dialog = true;
     },
 
@@ -93,8 +93,10 @@ export default {
           description: this.editedItem.description,
           isDone: this.editedItem.isDone,
           urgency: this.editedItem.urgency,
-          dueDate: new Date(this.editedItem.dueDate),
         };
+        if (this.editedItem.dueDate) {
+          payload.dueDate = new Date(+this.editedItem.dueDate);
+        }
         this.$apollo.mutate({
           mutation: EDIT_TASK,
           variables: {
@@ -121,7 +123,7 @@ export default {
       }
     },
 
-    computedDate: (date) => format(+date, 'mediumDate'),
+    computedDate: (date) => format(new Date(+date), 'MM-DD-YYYY [at] hh:mm A'),
   },
 };
 </script>

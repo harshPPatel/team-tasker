@@ -71,7 +71,7 @@ const editTask = (_, args, context) => {
 
       // Updating values for database instance
       task.task = data.value.task ? data.value.task : task.task;
-      task.isDone = data.value.isDone
+      task.isDone = data.value.isDone !== null
         ? data.value.isDone
         : task.isDone;
       task.description = data.value.description
@@ -84,6 +84,8 @@ const editTask = (_, args, context) => {
         ? data.value.dueDate
         : task.dueDate;
       task.updatedAt = Date.now();
+
+      console.log(data.value.isDone);
 
       // saving task to database
       return task.save()
